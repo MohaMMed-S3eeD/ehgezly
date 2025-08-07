@@ -40,13 +40,8 @@ export const LoginAction = async (formData: LoginType) => {
             redirectTo: "/profile",
         });
     } catch (error) {
-
-        if (error instanceof Error && error.message === "NEXT_REDIRECT") {
-            console.log("✅ Login successful - redirecting to profile");
-            throw error;
-        }
-
-        return { error: "Login failed - invalid credentials" };
+        console.log(error);
+        return { error: "Login failed" };
     }
     return { success: "Login successful" };
 
