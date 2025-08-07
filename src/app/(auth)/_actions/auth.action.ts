@@ -3,6 +3,7 @@ import { signIn } from "@/auth";
 import { db } from "@/lib/prisma";
 import { LoginSchema, RegisterSchema } from "@/validation/auth/auth";
 import bcrypt from "bcryptjs";
+import { redirect } from "next/navigation";
 
 type LoginType = {
     email: string;
@@ -25,7 +26,7 @@ export const LoginAction = async (formData: LoginType) => {
         const user = await db.user.findUnique({
             where: {
                 email: email,
-            },
+            }
         });
         if (!user) {
             return { error: "User not found" };
@@ -37,12 +38,13 @@ export const LoginAction = async (formData: LoginType) => {
         await signIn("credentials", {
             email,
             password,
-            redirectTo: "/profile",
+            redirect: false, 
         });
     } catch (error) {
         console.log(error);
         return { error: "Login failed" };
     }
+    redirect("/profile");   
     return { success: "Login successful" };
 
 }
