@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { RegisterSchema } from "@/validation/auth/auth";
 import { RegisterAction } from "../../_actions/auth.action";
 import { toast } from "sonner";
-
+import { useRouter } from "next/navigation";
 const Form = () => {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -43,7 +44,7 @@ const Form = () => {
         });
       return;
     } else {
-      toast.success(response.success, {
+      toast.success("Register successful", {
         position: "top-center",
         duration: 3000,
         style: {
@@ -51,6 +52,7 @@ const Form = () => {
           color: "#fff",
         },
         });
+        router.push("/login");
     }
   };
   return (

@@ -1,4 +1,5 @@
 "use server";
+import { signIn } from "@/auth";
 import { db } from "@/lib/prisma";
 import { LoginSchema, RegisterSchema } from "@/validation/auth/auth";
 import bcrypt from "bcryptjs";
@@ -29,16 +30,25 @@ export const LoginAction = async (formData: LoginType) => {
         if (!user) {
             return { error: "User not found" };
         }
-        // const isPasswordValid = password === user.password;
         const isPasswordValid = await bcrypt.compare(password, user.password as string);
         if (!isPasswordValid) {
             return { error: "Invalid password" };
         }
-        return { success: "Login successful" };
+        await signIn("credentials", {
+            email,
+            password,
+            redirectTo: "/profile",
+        });
     } catch (error) {
-        console.log(error);
-        return { error: "Login failed" };
+
+        if (error instanceof Error && error.message === "NEXT_REDIRECT") {
+            console.log("✅ Login successful - redirecting to profile");
+            throw error;
+        }
+
+        return { error: "Login failed - invalid credentials" };
     }
+    return { success: "Login successful" };
 
 }
 export const RegisterAction = async (formData: RegisterType) => {

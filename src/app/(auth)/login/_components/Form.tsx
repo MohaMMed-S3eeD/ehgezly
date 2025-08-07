@@ -40,7 +40,7 @@ const Form = () => {
       });
       return;
     } else {
-      toast.success(response.success, {
+      toast.success("Login successful", {
         position: "top-center",
         duration: 3000,
         style: {
