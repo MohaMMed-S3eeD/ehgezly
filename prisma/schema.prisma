@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  ADMIN
+  PROVIDER
+  CUSTOMER
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  password  String
+  role      Role      @default(CUSTOMER)
+  services  Service[] @relation("UserServices")
+  bookings  Booking[] @relation("UserBookings")
+  createdAt DateTime  @default(now())
+}
+
+model Service {
+  id          String    @id @default(cuid())
+  title       String
+  description String
+  price       Float
+  duration    Int // المدة بالدقايق
+  provider    User      @relation("UserServices", fields: [providerId], references: [id])
+  providerId  String
+  slots       Slot[]
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+}
+
+model Slot {
+  id        String   @id @default(cuid())
+  startTime DateTime
+  endTime   DateTime
+  isBooked  Boolean  @default(false)
+  service   Service  @relation(fields: [serviceId], references: [id])
+  serviceId String
+  booking   Booking? // العلاقة العكسية بدون fields/references
+}
+
+model Booking {
+  id         String        @id @default(cuid())
+  customer   User          @relation("UserBookings", fields: [customerId], references: [id])
+  customerId String
+  service    Service       @relation(fields: [serviceId], references: [id])
+  serviceId  String
+  slot       Slot          @relation(fields: [slotId], references: [id])
+  slotId     String        @unique
+  status     BookingStatus @default(PENDING)
+  createdAt  DateTime      @default(now())
+}
