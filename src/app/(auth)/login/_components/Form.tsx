@@ -6,6 +6,7 @@ import Link from "next/link";
 import { LoginSchema } from "@/validation/auth/auth";
 import { toast } from "sonner";
 import { LoginAction } from "../../_actions/auth.action";
+import { redirect } from "next/navigation";
 const Form = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,6 +30,7 @@ const Form = () => {
       return;
     }
     const response = await LoginAction(data);
+    
     if (response.error) {
       toast.error(response.error, {
         position: "top-center",
@@ -49,6 +51,7 @@ const Form = () => {
         },
       });
     }
+    redirect("/profile");
   };
   return (
     <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md w-full">

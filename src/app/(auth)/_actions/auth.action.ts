@@ -1,5 +1,5 @@
 "use server";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { db } from "@/lib/prisma";
 import { LoginSchema, RegisterSchema } from "@/validation/auth/auth";
 import bcrypt from "bcryptjs";
@@ -44,7 +44,6 @@ export const LoginAction = async (formData: LoginType) => {
         console.log(error);
         return { error: "Login failed" };
     }
-    redirect("/profile");   
     return { success: "Login successful" };
 
 }
@@ -76,4 +75,8 @@ export const RegisterAction = async (formData: RegisterType) => {
         console.log(error);
         return { error: "Register failed" };
     }
+}
+export const LogoutAction = async () => {
+    await signOut();
+    redirect("/login");
 }
