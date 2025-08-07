@@ -7,6 +7,7 @@ import { LoginSchema } from "@/validation/auth/auth";
 import { toast } from "sonner";
 import { LoginAction } from "../../_actions/auth.action";
 import { redirect } from "next/navigation";
+
 const Form = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,7 +31,7 @@ const Form = () => {
       return;
     }
     const response = await LoginAction(data);
-    
+
     if (response.error) {
       toast.error(response.error, {
         position: "top-center",
@@ -73,6 +74,7 @@ const Form = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        
         <Button
           type="button"
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"

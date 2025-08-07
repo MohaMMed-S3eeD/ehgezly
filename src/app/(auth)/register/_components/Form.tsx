@@ -6,16 +6,25 @@ import { RegisterSchema } from "@/validation/auth/auth";
 import { RegisterAction } from "../../_actions/auth.action";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 const Form = () => {
   const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("CUSTOMER");
   const handleRegister = async () => {
     const data = {
       name,
       email,
       password,
+      role,
     };
     const validation = RegisterSchema.safeParse(data);
     console.log(validation);
@@ -28,8 +37,8 @@ const Form = () => {
             background: "red",
             color: "#fff",
           },
-          });
         });
+      });
       return;
     }
     const response = await RegisterAction(data);
@@ -41,7 +50,7 @@ const Form = () => {
           background: "red",
           color: "#fff",
         },
-        });
+      });
       return;
     } else {
       toast.success("Register successful", {
@@ -51,8 +60,8 @@ const Form = () => {
           background: "green",
           color: "#fff",
         },
-        });
-        router.push("/login");
+      });
+      router.push("/login");
     }
   };
   return (
@@ -82,6 +91,17 @@ const Form = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        <div className="w-full flex justify-center items-center">
+          <Select value={role} onValueChange={(value) => setRole(value)}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Role" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="CUSTOMER">Customer</SelectItem>
+              <SelectItem value="PROVIDER">Provider</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <Button
           type="button"
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"

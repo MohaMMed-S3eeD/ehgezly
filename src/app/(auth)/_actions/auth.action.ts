@@ -2,8 +2,8 @@
 import { signIn, signOut } from "@/auth";
 import { db } from "@/lib/prisma";
 import { LoginSchema, RegisterSchema } from "@/validation/auth/auth";
+import { Role } from "@prisma/client";
 import bcrypt from "bcryptjs";
-import { redirect } from "next/navigation";
 
 type LoginType = {
     email: string;
@@ -13,6 +13,7 @@ type RegisterType = {
     name: string;
     email: string;
     password: string;
+    role: string;
 }
 
 export const LoginAction = async (formData: LoginType) => {
@@ -38,7 +39,7 @@ export const LoginAction = async (formData: LoginType) => {
         await signIn("credentials", {
             email,
             password,
-            redirect: false, 
+            redirect: false,
         });
     } catch (error) {
         console.log(error);
@@ -48,8 +49,8 @@ export const LoginAction = async (formData: LoginType) => {
 
 }
 export const RegisterAction = async (formData: RegisterType) => {
-    const { name, email, password } = formData;
-    const validation = RegisterSchema.safeParse({ name, email, password });
+    const { name, email, password, role } = formData;
+    const validation = RegisterSchema.safeParse({ name, email, password, role });
     if (!validation.success) {
         return { error: validation.error.message };
     }
@@ -68,6 +69,7 @@ export const RegisterAction = async (formData: RegisterType) => {
                 name: name,
                 email: email,
                 password: hashedPassword,
+                role: role as Role,
             },
         });
         return { success: "Register successful", user };
