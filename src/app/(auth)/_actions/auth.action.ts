@@ -78,5 +78,5 @@ export const RegisterAction = async (formData: RegisterType) => {
 }
 export const LogoutAction = async () => {
     await signOut();
-    redirect("/login");
+    // redirect("/login");
 }

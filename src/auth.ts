@@ -12,7 +12,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
 
     providers: [
-        Credentials({   
+        Credentials({
             async authorize(credentials) {
                 const { email, password } = credentials as { email: string, password: string }
                 try {
@@ -20,7 +20,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                         where: {
                             email: email,
                         },
-                     
+
                     });
                     if (!user) {
                         return null;
@@ -29,7 +29,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     if (!isPasswordValid) {
                         return null;
                     }
-                    return user;    
+                    return user;
                 } catch (error) {
                     console.log(error);
                     return null;
