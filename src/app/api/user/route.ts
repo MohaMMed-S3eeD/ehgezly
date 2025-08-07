@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { db } from "../../../lib/prisma";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     const users = await db.user.findMany({
         include: {
             services: true,
