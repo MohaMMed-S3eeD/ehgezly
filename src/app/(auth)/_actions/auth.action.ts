@@ -30,7 +30,7 @@ export const LoginAction = async (formData: LoginType) => {
             return { error: "User not found" };
         }
         // const isPasswordValid = password === user.password;
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const isPasswordValid = await bcrypt.compare(password, user.password as string);
         if (!isPasswordValid) {
             return { error: "Invalid password" };
         }
