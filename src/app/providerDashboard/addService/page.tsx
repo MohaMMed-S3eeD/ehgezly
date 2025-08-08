@@ -2,8 +2,9 @@
 import React, { useActionState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { addService } from "../_actions/AddService.action";
+import { addService } from "../_actions/Service.action";
 import { toast } from "sonner";
+import TimeRangePicker from "../_components/TimeRangePicker";
 
 type AddServiceState = Awaited<ReturnType<typeof addService>>;
 const initialState: AddServiceState | null = null;
@@ -55,7 +56,7 @@ const AddServicePage = () => {
           </label>
           <Input id="duration" name="duration" type="number" placeholder="60" />
         </div>
-
+        <TimeRangePicker />
         <div className="pt-2">
           <Button type="submit" disabled={isPending}>
             {isPending ? "Adding..." : "Add Service"}
