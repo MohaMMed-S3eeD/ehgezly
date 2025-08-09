@@ -1,7 +1,7 @@
 "use client";
 import { Service } from "@prisma/client";
 import React, { useActionState, useEffect } from "react";
-import { Clock, DollarSign, Pencil, Trash } from "lucide-react";
+import { Clock, DollarSign, Pencil, Plus, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { deleteService, editService } from "../_actions/Service.action";
 import { toast } from "sonner";
+import Link from "next/link";
 
 type EditServiceState = Awaited<ReturnType<typeof editService>>;
 type DeleteServiceState = Awaited<ReturnType<typeof deleteService>>;
@@ -131,6 +132,9 @@ const ServiceCard = ({ service }: { service: Service }) => {
             </DialogHeader>
           </DialogContent>
         </Dialog>
+        <Link href={`/providerDashboard/addSlot/${service.id}`}>
+          <Plus className="size-4" />
+        </Link>
       </div>
     </div>
   );

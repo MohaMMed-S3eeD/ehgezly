@@ -11,7 +11,10 @@ function pad2(n: number): string {
   return String(n).padStart(2, "0");
 }
 
-function parseTime(value: string | undefined): { hour: number; minute: number } {
+function parseTime(value: string | undefined): {
+  hour: number;
+  minute: number;
+} {
   if (!value) return { hour: 0, minute: 0 };
   const [h, m] = value.split(":");
   const hour = Math.max(0, Math.min(23, Number(h ?? 0)));
@@ -19,16 +22,37 @@ function parseTime(value: string | undefined): { hour: number; minute: number } 
   return { hour, minute };
 }
 
-function TimeDropdown({ value, onChange, placeholder = "اختر الوقت" }: TimeDropdownProps) {
+function to12Hour(hour24: number): { hour12: number; isPM: boolean } {
+  const isPM = hour24 >= 12;
+  const raw = hour24 % 12;
+  const hour12 = raw === 0 ? 12 : raw;
+  return { hour12, isPM };
+}
+
+function to24Hour(hour12: number, isPM: boolean): number {
+  if (hour12 === 12) {
+    return isPM ? 12 : 0;
+  }
+  return isPM ? hour12 + 12 : hour12;
+}
+
+function TimeDropdown({
+  value,
+  onChange,
+  placeholder = "Select time",
+}: TimeDropdownProps) {
   const [open, setOpen] = useState(false);
-  const { hour: initialHour, minute: initialMinute } = parseTime(value);
-  const [hour, setHour] = useState<number>(initialHour);
+  const { hour: initialHour24, minute: initialMinute } = parseTime(value);
+  const { hour12: initialHour12, isPM: initialIsPM } = to12Hour(initialHour24);
+  const [hour12, setHour12] = useState<number>(initialHour12);
+  const [isPM, setIsPM] = useState<boolean>(initialIsPM);
   const [minute, setMinute] = useState<number>(initialMinute);
   const rootRef = useRef<HTMLDivElement | null>(null);
-
   useEffect(() => {
-    const { hour: h, minute: m } = parseTime(value);
-    setHour(h);
+    const { hour: h24, minute: m } = parseTime(value);
+    const { hour12: h12, isPM: pm } = to12Hour(h24);
+    setHour12(h12);
+    setIsPM(pm);
     setMinute(m);
   }, [value]);
 
@@ -43,10 +67,16 @@ function TimeDropdown({ value, onChange, placeholder = "اختر الوقت" }: 
     return () => document.removeEventListener("mousedown", handleDocClick);
   }, [open]);
 
-  const minutes = Array.from({ length: 12 }, (_, i) => i * 5); // كل 5 دقائق
-  const hours = Array.from({ length: 24 }, (_, i) => i);
+  const minutes = Array.from({ length: 12 }, (_, i) => i * 5); // Every 5 minutes
+  const hours12 = Array.from({ length: 12 }, (_, i) => i + 1);
 
-  const display = value ? value : placeholder;
+  const display = value
+    ? (() => {
+        const { hour: h24, minute: m } = parseTime(value);
+        const { hour12: h12, isPM: pm } = to12Hour(h24);
+        return `${pad2(h12)}:${pad2(m)} ${pm ? "PM" : "AM"}`;
+      })()
+    : placeholder;
 
   return (
     <div ref={rootRef} className="relative">
@@ -59,52 +89,94 @@ function TimeDropdown({ value, onChange, placeholder = "اختر الوقت" }: 
         aria-expanded={open}
         aria-haspopup="listbox"
       >
-        <span className={value ? "text-foreground" : "text-muted-foreground"}>{display}</span>
+        <span className={value ? "text-foreground" : "text-muted-foreground"}>
+          {display}
+        </span>
         <span className="text-muted-foreground">⏷</span>
       </Button>
       {open ? (
         <div
           role="dialog"
-          className="absolute z-50 mt-2 w-[260px] rounded-md border bg-popover p-3 shadow-md right-0"
+          className="absolute z-50 mt-2 w-[220px] rounded-md border bg-popover p-2 shadow-md left-0"
         >
-          <div className="mb-2 text-xs text-muted-foreground">اختر الساعة والدقيقة</div>
-          <div className="flex gap-3">
-            <div className="flex-1">
-              <div className="mb-1 text-[10px] text-muted-foreground">ساعة</div>
-              <div className="grid grid-cols-4 gap-1 max-h-40 overflow-auto pr-1">
-                {hours.map((h) => (
+          <div className="mb-1 text-xs text-muted-foreground">Select time</div>
+          <div className="flex gap-2">
+            <div className="flex-1 min-w-0">
+              <div className="mb-1 text-[10px] text-muted-foreground">Hour</div>
+              <div className="flex flex-col gap-1 max-h-48 overflow-auto pl-1">
+                {hours12.map((h12) => (
                   <Button
-                    key={h}
+                    key={h12}
                     type="button"
                     size="sm"
-                    variant={h === hour ? "secondary" : "ghost"}
-                    className="h-8 px-2"
-                    onClick={() => setHour(h)}
+                    variant={h12 === hour12 ? "secondary" : "ghost"}
+                    className="h-8 px-2 justify-start"
+                    onClick={() => {
+                      setHour12(h12);
+                      const h24 = to24Hour(h12, isPM);
+                      onChange(`${pad2(h24)}:${pad2(minute)}`);
+                    }}
                   >
-                    {pad2(h)}
+                    {pad2(h12)}
                   </Button>
                 ))}
               </div>
             </div>
-            <div className="flex-1">
-              <div className="mb-1 text-[10px] text-muted-foreground">دقيقة</div>
-              <div className="grid grid-cols-4 gap-1 max-h-40 overflow-auto pr-1">
+            <div className="flex-1 min-w-0">
+              <div className="mb-1 text-[10px] text-muted-foreground">
+                Minute
+              </div>
+              <div className="flex flex-col gap-1 max-h-48 overflow-auto pl-1">
                 {minutes.map((m) => (
                   <Button
                     key={m}
                     type="button"
                     size="sm"
                     variant={m === minute ? "secondary" : "ghost"}
-                    className="h-8 px-2"
+                    className="h-8 px-2 justify-start"
                     onClick={() => {
                       setMinute(m);
-                      onChange(`${pad2(hour)}:${pad2(m)}`);
+                      const h24 = to24Hour(hour12, isPM);
+                      onChange(`${pad2(h24)}:${pad2(m)}`);
                       setOpen(false);
                     }}
                   >
                     {pad2(m)}
                   </Button>
                 ))}
+              </div>
+            </div>
+            <div className="w-[56px]">
+              <div className="mb-1 text-[10px] text-muted-foreground">
+                Period
+              </div>
+              <div className="flex flex-col gap-1">
+                <Button
+                  type="button"
+                  size="sm"
+                  variant={!isPM ? "secondary" : "ghost"}
+                  className="h-8 px-2"
+                  onClick={() => {
+                    setIsPM(false);
+                    const h24 = to24Hour(hour12, false);
+                    onChange(`${pad2(h24)}:${pad2(minute)}`);
+                  }}
+                >
+                  AM
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant={isPM ? "secondary" : "ghost"}
+                  className="h-8 px-2"
+                  onClick={() => {
+                    setIsPM(true);
+                    const h24 = to24Hour(hour12, true);
+                    onChange(`${pad2(h24)}:${pad2(minute)}`);
+                  }}
+                >
+                  PM
+                </Button>
               </div>
             </div>
           </div>
@@ -114,10 +186,17 @@ function TimeDropdown({ value, onChange, placeholder = "اختر الوقت" }: 
   );
 }
 
-export default function TimeRangePicker() {
-  const [startTime, setStartTime] = useState("05:08");
-  const [endTime, setEndTime] = useState("12:42");
-
+export default function TimeRangePicker({
+  startTime,
+  endTime,
+  setStartTime,
+  setEndTime,
+}: {
+  startTime: string;
+  endTime: string;
+  setStartTime: (time: string) => void;
+  setEndTime: (time: string) => void;
+}) {
   const clearTimes = () => {
     setStartTime("");
     setEndTime("");
@@ -125,33 +204,41 @@ export default function TimeRangePicker() {
 
   return (
     <div
-      dir="rtl"
+      dir="ltr"
       className="group flex items-center gap-2 rounded-lg border bg-background/70 px-3 py-2 w-fit shadow-xs border-input hover:shadow-sm focus-within:ring-2 focus-within:ring-ring/40 transition"
     >
-      {/* وقت البداية */}
+      {/* Start time */}
       <div className="flex items-center gap-2">
-        <span className="text-xs text-muted-foreground">من</span>
-        <TimeDropdown value={startTime} onChange={setStartTime} placeholder="اختر" />
+        <span className="text-xs text-muted-foreground">From</span>
+        <TimeDropdown
+          value={startTime}
+          onChange={setStartTime}
+          placeholder="Select"
+        />
       </div>
 
-      {/* السهم */}
+      {/* Arrow */}
       <span className="mx-1 text-muted-foreground">→</span>
 
-      {/* وقت النهاية */}
+      {/* End time */}
       <div className="flex items-center gap-2">
-        <span className="text-xs text-muted-foreground">إلى</span>
-        <TimeDropdown value={endTime} onChange={setEndTime} placeholder="اختر" />
+        <span className="text-xs text-muted-foreground">To</span>
+        <TimeDropdown
+          value={endTime}
+          onChange={setEndTime}
+          placeholder="Select"
+        />
       </div>
 
-      {/* زر المسح */}
+      {/* Clear button */}
       <Button
         type="button"
         onClick={clearTimes}
         variant="ghost"
         size="sm"
-        className="ml-1 size-8 p-0 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent"
-        aria-label="مسح الوقت"
-        title="مسح الوقت"
+        className="mr-1 size-8 p-0 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent"
+        aria-label="Clear time"
+        title="Clear time"
       >
         ×
       </Button>

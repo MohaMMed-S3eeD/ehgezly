@@ -1,3 +1,4 @@
+
 "use server";
 
 import { db } from "@/lib/prisma";
@@ -113,3 +114,39 @@ export const deleteService = async (
     }
 };
 
+export const getServices = async () => {
+    const user = await getUser();
+    if (!user) {
+        return { success: false, message: ["User not found"] } as const;
+    }
+    try {
+        const services = await db.service.findMany({
+            where: { providerId: user.id },
+            include: {
+                slots: true,
+            },
+        });
+        return { success: true, data: services } as const;
+    } catch (error) {
+        console.log(error);
+        return { success: false, message: ["Failed to fetch services"] } as const;
+    }
+};
+export const getServiceById = async (id: string) => {
+    const user = await getUser();
+    if (!user) {
+        return { success: false, message: ["User not found"] } as const;
+    }
+    try {
+        const service = await db.service.findUnique({
+            where: { id, providerId: user.id },
+            include: {
+                slots: true,
+            },
+        });
+        return { success: true, data: service } as const;
+    } catch (error) {
+        console.log(error);
+        return { success: false, message: ["Failed to fetch service"] } as const;
+    }
+};

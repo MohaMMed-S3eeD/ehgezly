@@ -1,22 +1,29 @@
 "use client";
-import React, { useActionState, useEffect } from "react";
+import React, { useActionState, useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { addService } from "../_actions/Service.action";
 import { toast } from "sonner";
 import TimeRangePicker from "../_components/TimeRangePicker";
+import { Calendar } from "@/components/ui/calendar";
 
 type AddServiceState = Awaited<ReturnType<typeof addService>>;
 const initialState: AddServiceState | null = null;
 
 const AddServicePage = () => {
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [date, setDate] = useState<Date | undefined>(new Date());
+  useEffect(() => {
+    console.log(startTime, endTime, date);
+  }, [startTime, endTime, date]);
   const [state, action, isPending] = useActionState(addService, initialState);
   useEffect(() => {
     if (state?.success) {
       toast.success(state?.message[0]);
     } else if (state && !state.success) {
       const values = Object.values(state.message).flat();
-      values.map(value => toast.error(value));
+      values.map((value) => toast.error(value));
     }
   }, [state]);
 
@@ -56,7 +63,19 @@ const AddServicePage = () => {
           </label>
           <Input id="duration" name="duration" type="number" placeholder="60" />
         </div>
-        <TimeRangePicker />
+        <TimeRangePicker
+          startTime={startTime}
+          endTime={endTime}
+          setStartTime={setStartTime}
+          setEndTime={setEndTime}
+        />
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={setDate}
+          className="rounded-md border shadow-sm"
+          captionLayout="dropdown"
+        />
         <div className="pt-2">
           <Button type="submit" disabled={isPending}>
             {isPending ? "Adding..." : "Add Service"}
