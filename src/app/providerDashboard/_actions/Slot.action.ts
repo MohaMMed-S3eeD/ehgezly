@@ -12,6 +12,9 @@ export const addSlot = async (
     const startTime = formData.get("startTime");
     const endTime = formData.get("endTime");
     const date = formData.get("date");
+    const tzOffsetStr = formData.get("tzOffset"); // fallback
+    const tzOffsetStartStr = formData.get("tzOffsetStart");
+    const tzOffsetEndStr = formData.get("tzOffsetEnd");
     const idService = formData.get("idService");
     const user = await getUser();
     const result = addSlotValid.safeParse({
@@ -29,7 +32,25 @@ export const addSlot = async (
         return { success: false, message: ["User not found"] } as const;
     }
     try {
-        const selectedDate = new Date(result.data.date);
+        // Parse local date (YYYY-MM-DD) and local times, then convert to UTC using tzOffset
+        const parseDateYMD = (dateStr: string) => {
+            const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(dateStr);
+            if (!m) return null;
+            const year = Number(m[1]);
+            const month = Number(m[2]);
+            const day = Number(m[3]);
+            if (
+                Number.isNaN(year) ||
+                Number.isNaN(month) ||
+                Number.isNaN(day) ||
+                month < 1 ||
+                month > 12 ||
+                day < 1 ||
+                day > 31
+            )
+                return null;
+            return { year, month, day } as const;
+        };
 
         const parseTime = (timeStr: string) => {
             const match = /^(\d{1,2}):(\d{2})$/.exec(timeStr);
@@ -43,28 +64,46 @@ export const addSlot = async (
 
         const startParts = parseTime(result.data.startTime);
         const endParts = parseTime(result.data.endTime);
-        if (!startParts || !endParts || Number.isNaN(selectedDate.getTime())) {
+        const ymd = parseDateYMD(result.data.date);
+        if (!startParts || !endParts || !ymd) {
             return { success: false, message: ["Invalid date or time format"] } as const;
         }
 
-        const startAt = new Date(Date.UTC(
-            selectedDate.getUTCFullYear(),
-            selectedDate.getUTCMonth(),
-            selectedDate.getUTCDate(),
+        const tzOffsetStartMinutes = (() => {
+            const n = Number(tzOffsetStartStr);
+            if (Number.isFinite(n)) return n;
+            const fb = Number(tzOffsetStr);
+            return Number.isFinite(fb) ? fb : 0;
+        })();
+        const tzOffsetEndMinutes = (() => {
+            const n = Number(tzOffsetEndStr);
+            if (Number.isFinite(n)) return n;
+            const fb = Number(tzOffsetStr);
+            return Number.isFinite(fb) ? fb : 0;
+        })();
+
+        // Build UTC instants from local Y-M-D and local time components by adding tzOffset minutes
+        const startMsUTC = Date.UTC(
+            ymd.year,
+            ymd.month - 1,
+            ymd.day,
             startParts.hours,
             startParts.minutes,
             0,
             0,
-        ));
-        const endAt = new Date(Date.UTC(
-            selectedDate.getUTCFullYear(),
-            selectedDate.getUTCMonth(),
-            selectedDate.getUTCDate(),
+        ) + tzOffsetStartMinutes * 60_000;
+        const endMsUTC = Date.UTC(
+            ymd.year,
+            ymd.month - 1,
+            ymd.day,
             endParts.hours,
             endParts.minutes,
             0,
             0,
-        ));
+        ) + tzOffsetEndMinutes * 60_000;
+
+        const startAt = new Date(startMsUTC);
+        const endAt = new Date(endMsUTC);
 
         if (endAt <= startAt) {
             return { success: false, message: ["End time must be after start time"] } as const;
@@ -112,4 +151,14 @@ export const addSlot = async (
     }
 };
 
+export const getSlots = async () => {
+    const user = await getUser();
+    if (!user) {
+        return { success: false, message: ["User not found"] } as const;
+    }
+    const slots = await db.slot.findMany({
+        where: { service: { providerId: user.id } },
+    });
+    return { success: true, data: slots } as const;
+};
 
