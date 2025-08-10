@@ -109,7 +109,9 @@ export const addSlot = async (
         if (endAt <= startAt) {
             return { success: false, message: ["End time must be after start time"] } as const;
         }
-
+        if (startAt < new Date()) {
+            return { success: false, message: ["Start time must be in the future"] } as const;
+        }
         const ownService = await db.service.findUnique({
             where: { id: result.data.idService, providerId: user.id },
             select: { id: true },
