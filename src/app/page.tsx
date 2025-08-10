@@ -1,24 +1,22 @@
-"use client";
-import Link from "next/link";
 
 export default function Home() {
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <h1>Hi Mo&apos;Saeed</h1>
-
-      <div className="flex gap-4 mt-6">
-        <Link
-          href="/login"
-          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
-        >
-          تسجيل الدخول
-        </Link>
-        <Link
-          href="/register"
-          className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors duration-200"
-        >
-          إنشاء حساب
-        </Link>
+    <section className="flex flex-col items-center justify-center gap-8 py-16 md:py-24 min-h-[80vh]">
+      <div className="text-center space-y-4">
+        <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Hi Mo&apos;Saeed
+        </h1>
+        <p className="text-lg md:text-xl text-muted-foreground max-w-2xl">
+          Welcome to our services platform
+        </p>
+      </div>
+      <div className="flex flex-col sm:flex-row gap-4 mt-8">
+        <button className="px-8 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold">
+          Get Started
+        </button>
+        <button className="px-8 py-3 border border-border rounded-lg hover:bg-accent transition-colors">
+          Learn More
+        </button>
       </div>
     </section>
   );

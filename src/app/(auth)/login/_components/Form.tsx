@@ -11,6 +11,7 @@ import { redirect } from "next/navigation";
 const Form = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const handleLogin = async () => {
     const data = {
       email,
@@ -30,10 +31,33 @@ const Form = () => {
       });
       return;
     }
-    const response = await LoginAction(data);
 
-    if (response.error) {
-      toast.error(response.error, {
+    try {
+      setIsLoading(true);
+      const response = await LoginAction(data);
+      if (response.error) {
+        toast.error(response.error, {
+          position: "top-center",
+          duration: 3000,
+          style: {
+            background: "red",
+            color: "#fff",
+          },
+        });
+      }
+      if (response.success) {
+        toast.success("Login successful", {
+          position: "top-center",
+          duration: 3000,
+          style: {
+            background: "green",
+            color: "#fff",
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Login failed", {
         position: "top-center",
         duration: 3000,
         style: {
@@ -41,17 +65,10 @@ const Form = () => {
           color: "#fff",
         },
       });
-      return;
-    } else {
-      toast.success("Login successful", {
-        position: "top-center",
-        duration: 3000,
-        style: {
-          background: "green",
-          color: "#fff",
-        },
-      });
+    } finally {
+      setIsLoading(false);
     }
+
     redirect("/profile");
   };
   return (
@@ -74,7 +91,7 @@ const Form = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        
+
         <Button
           type="button"
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
@@ -82,7 +99,7 @@ const Form = () => {
             handleLogin();
           }}
         >
-          Login
+          {isLoading ? "Loading..." : "Login"}
         </Button>
         <Link href="/register">Register</Link>
       </form>
