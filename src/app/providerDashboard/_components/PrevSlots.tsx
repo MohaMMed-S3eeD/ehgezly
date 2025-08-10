@@ -98,16 +98,26 @@ const PrevSlots = ({ refreshTrigger, date }: PrevSlotsProps) => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="rounded-xl border bg-card/50 shadow-sm">
+    <div className="space-y-6 h-full">
+      <div className="rounded-xl border bg-card/50 shadow-sm">  
         <div className="flex items-center justify-between border-b px-4 py-3">
-          <div>
-            <div className="text-sm font-medium">Timeline</div>
-            <div className="text-xs text-muted-foreground">{date ? formatDateDMY(date) : "Pick a date to view slots"}</div>
+          <div className="flex items-center gap-2">
+            <span className="text-lg" aria-hidden>🗓️</span>
+            <div>
+              <div className="text-sm font-medium">Timeline</div>
+              <div className="text-xs text-muted-foreground">{date ? "Selected day" : "Pick a date to view slots"}</div>
+            </div>
           </div>
-          {isLoading && (
-            <span className="text-xs text-muted-foreground">Loading...</span>
-          )}
+          <div className="flex items-center gap-3">
+            {date && (
+              <span className="inline-flex items-center rounded-full bg-muted px-2 py-1 text-xs text-foreground">
+                {formatDateDMY(date)}
+              </span>
+            )}
+            {isLoading && (
+              <span className="text-xs text-muted-foreground">Loading...</span>
+            )}
+          </div>
         </div>
 
         <div className="space-y-3 p-4">
@@ -129,7 +139,9 @@ const PrevSlots = ({ refreshTrigger, date }: PrevSlotsProps) => {
             </div>
 
             {/* شريط التوافر كل 30 دقيقة */}
-            <div className="mt-2 grid grid-cols-[repeat(48,minmax(16px,1fr))] sm:grid-cols-[repeat(48,minmax(20px,1fr))] md:grid-cols-[repeat(48,minmax(24px,1fr))] gap-0.5 min-w-[768px] sm:min-w-[960px] md:min-w-[1152px]">
+            <div
+              className="mt-2 grid grid-cols-[repeat(48,minmax(16px,1fr))] sm:grid-cols-[repeat(48,minmax(20px,1fr))] md:grid-cols-[repeat(48,minmax(24px,1fr))] gap-0.5 min-w-[768px] sm:min-w-[960px] md:min-w-[1152px] rounded-md bg-[repeating-linear-gradient(to_right,rgba(0,0,0,0.04)_0_1px,transparent_1px_24px)]"
+            >
               {isLoading
                 ? Array.from({ length: 48 }).map((_, idx) => (
                     <div key={idx} className="h-6 md:h-8 animate-pulse rounded bg-muted" />
@@ -150,25 +162,22 @@ const PrevSlots = ({ refreshTrigger, date }: PrevSlotsProps) => {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 text-sm">
-            <div className="flex items-center gap-2">
-              <span className="inline-block h-3 w-3 rounded-sm bg-emerald-500" />
-              <span>Available</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="inline-block h-3 w-3 rounded-sm bg-rose-500" />
-              <span>Booked</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="inline-block h-3 w-3 rounded-sm bg-muted" />
-              <span>None</span>
-            </div>
+          <div className="flex flex-wrap items-center gap-2 text-xs">
+            <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-2.5 py-1 text-emerald-700 ring-1 ring-emerald-200">
+              <span className="inline-block h-2.5 w-2.5 rounded-full bg-emerald-500" /> Available
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-rose-50 px-2.5 py-1 text-rose-700 ring-1 ring-rose-200">
+              <span className="inline-block h-2.5 w-2.5 rounded-full bg-rose-500" /> Booked
+            </span>
+            <span className="inline-flex items-center gap-2 rounded-full bg-muted px-2.5 py-1 text-foreground/80 ring-1 ring-muted-foreground/20">
+              <span className="inline-block h-2.5 w-2.5 rounded-full bg-muted-foreground/30" /> None
+            </span>
           </div>
         </div>
       </div>
 
       {/* Slots list */}
-      <div className="rounded-xl border bg-card/50 shadow-sm">
+      <div className="rounded-xl border bg-card/50 shadow-sm h-full">
         <div className="flex items-center justify-between border-b px-4 py-3">
           <div className="text-sm font-medium">Slots</div>
           <div className="text-xs text-muted-foreground">{filteredSlots.length} slots</div>
@@ -189,7 +198,7 @@ const PrevSlots = ({ refreshTrigger, date }: PrevSlotsProps) => {
                 return (
                   <div
                     key={slot.id}
-                    className="group flex items-center justify-between rounded-md border bg-background/60 p-3 transition-colors hover:bg-background"
+                    className="group flex flex-col sm:flex-row sm:items-center justify-between rounded-md border bg-background/60 p-3 transition-colors hover:bg-background gap-2 sm:gap-3"
                   >
                     <div className="flex items-center gap-3">
                       <div className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
@@ -197,14 +206,19 @@ const PrevSlots = ({ refreshTrigger, date }: PrevSlotsProps) => {
                           ? "bg-rose-100 text-rose-700"
                           : "bg-emerald-100 text-emerald-700"
                       }`}>
-                        {isBooked ? "Booked" : "Available"}
+                        <span className="hidden sm:inline">
+                          {isBooked ? "Booked" : "Available"}
+                        </span>
+                        <span className={`inline-block sm:hidden h-2 w-2 rounded-full ${
+                          isBooked ? "bg-rose-500" : "bg-emerald-500"
+                        }`} />
                       </div>
                       <div className="text-sm">
                         {formatTime12(new Date(slot.startTime))} - {formatDateDMY(new Date(slot.startTime))}
                       </div>
                     </div>
-                    <div className="text-sm text-muted-foreground">→</div>
-                    <div className="text-sm">
+                    <div className="hidden sm:block text-sm text-muted-foreground">→</div>
+                    <div className="text-sm sm:text-right">
                       {formatTime12(new Date(slot.endTime))} - {formatDateDMY(new Date(slot.endTime))}
                     </div>
                   </div>

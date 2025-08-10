@@ -34,7 +34,7 @@ const AddSlotPage = () => {
     if (state?.success) {
       toast.success(state.message[0]);
       // تحديث البيانات بعد إضافة slot بنجاح
-      setRefreshTrigger(prev => prev + 1);
+      setRefreshTrigger((prev) => prev + 1);
     }
     if (state?.success === false) {
       const values = Object.values(state.message).flat();
@@ -45,14 +45,18 @@ const AddSlotPage = () => {
     <div className="mx-auto max-w-5xl p-6">
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">Add Service Slot</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Create a new slot for your service and choose date & time.</p>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            Add Service Slot
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Create a new slot for your service and choose date & time.
+          </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-5">
-        <div className="md:col-span-3">
-          <div className="rounded-xl border bg-card/50 shadow-sm">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-5 h-full">
+        <div className="md:col-span-3 h-full">
+          <div className="rounded-xl border bg-card/50 shadow-sm h-full">
             <div className="border-b px-4 py-3">
               <div className="text-sm font-medium">Preview</div>
             </div>
@@ -62,11 +66,12 @@ const AddSlotPage = () => {
           </div>
         </div>
 
-        <form className="md:col-span-2 space-y-4 rounded-xl border bg-card/50 p-4 shadow-sm md:sticky md:top-4 h-fit" action={action}>
+        <form
+          className="md:col-span-2 space-y-4 rounded-xl border bg-card/50 p-4 shadow-sm md:sticky md:top-4 h-fit"
+          action={action}
+        >
           <input type="hidden" name="idService" value={idService} />
-          {/**
-           * نرسل التاريخ بصيغة محلية ثابتة YYYY-MM-DD بدل ISO لتجنب تحوّل اليوم حسب الـ timezone
-           */}
+        
           <input
             type="hidden"
             name="date"
@@ -147,22 +152,28 @@ const AddSlotPage = () => {
               endTime={endTime}
               setStartTime={setStartTime}
               setEndTime={setEndTime}
+              className="mt-2"
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-2 w-full">
             <label className="text-sm font-medium">Select date</label>
             <Calendar
               mode="single"
               selected={date}
               onSelect={setDate}
-              className="rounded-md border shadow-sm"
+              className="rounded-md border shadow-sm w-full mt-2"
               captionLayout="dropdown"
             />
           </div>
 
-          <div className="flex items-center justify-end gap-2 pt-2">
-            <Button type="submit" variant="secondary" disabled={isPending}>
+          <div className="flex items-center justify-end gap-2 pt-2 w-full">
+            <Button
+              type="submit"
+              variant="secondary"
+              disabled={isPending}
+              className="w-full "
+            >
               {isPending ? "Saving..." : "Save"}
             </Button>
           </div>

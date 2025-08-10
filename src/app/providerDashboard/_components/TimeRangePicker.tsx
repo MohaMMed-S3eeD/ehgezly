@@ -191,11 +191,13 @@ export default function TimeRangePicker({
   endTime,
   setStartTime,
   setEndTime,
+  className,
 }: {
   startTime: string;
   endTime: string;
   setStartTime: (time: string) => void;
   setEndTime: (time: string) => void;
+  className?: string;
 }) {
   const clearTimes = () => {
     setStartTime("");
@@ -205,11 +207,13 @@ export default function TimeRangePicker({
   return (
     <div
       dir="ltr"
-      className="group flex flex-wrap items-center gap-3 rounded-lg border bg-background/70 px-3 py-3 w-full sm:w-fit max-w-full shadow-xs border-input hover:shadow-sm focus-within:ring-2 focus-within:ring-ring/40 transition"
+      className={`group flex flex-wrap items-center gap-3 rounded-lg border bg-background/70 px-3 py-3 w-full sm:w-fit max-w-full shadow-xs border-input hover:shadow-sm focus-within:ring-2 focus-within:ring-ring/40 transition ${className}`}
     >
       {/* Start time */}
       <div className="flex items-center gap-2 min-w-[220px]">
-        <span className="text-xs text-muted-foreground">From</span>
+        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+          <span aria-hidden>🕘</span> From
+        </span>
         <div className="block sm:hidden">
           <input
             type="time"
@@ -221,16 +225,19 @@ export default function TimeRangePicker({
           />
         </div>
         <div className="hidden sm:block">
-          <TimeDropdown value={startTime} onChange={setStartTime} placeholder="Select" />
+          <TimeDropdown
+            value={startTime}
+            onChange={setStartTime}
+            placeholder="Select"
+          />
         </div>
       </div>
 
-      {/* Arrow */}
-      <span className="mx-1 text-muted-foreground">→</span>
-
       {/* End time */}
       <div className="flex items-center gap-2 min-w-[220px]">
-        <span className="text-xs text-muted-foreground">To</span>
+        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+          <span aria-hidden>🕙</span> To
+        </span>
         <div className="block sm:hidden">
           <input
             type="time"
@@ -242,7 +249,11 @@ export default function TimeRangePicker({
           />
         </div>
         <div className="hidden sm:block">
-          <TimeDropdown value={endTime} onChange={setEndTime} placeholder="Select" />
+          <TimeDropdown
+            value={endTime}
+            onChange={setEndTime}
+            placeholder="Select"
+          />
         </div>
       </div>
 
@@ -256,7 +267,7 @@ export default function TimeRangePicker({
         aria-label="Clear time"
         title="Clear time"
       >
-        ×
+        ✕
       </Button>
     </div>
   );
