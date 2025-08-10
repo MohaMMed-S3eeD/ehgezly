@@ -168,4 +168,14 @@ export const getSlots = async () => {
     });
     return { success: true, data: slots } as const;
 };
+export const getSlotsByIdService = async (idService: string) => {
+    const user = await getUser();
+    if (!user) {
+        return { success: false, message: ["User not found"] } as const;
+    }
+    const slots = await db.slot.findMany({
+        where: { serviceId: idService },
+    });
+    return { success: true, data: slots } as const;
+};
 

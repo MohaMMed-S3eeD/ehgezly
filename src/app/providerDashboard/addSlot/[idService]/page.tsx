@@ -61,7 +61,7 @@ const AddSlotPage = () => {
               <div className="text-sm font-medium">Preview</div>
             </div>
             <div className="p-4">
-              <PrevSlots refreshTrigger={refreshTrigger} date={date} />
+              <PrevSlots refreshTrigger={refreshTrigger} date={date} idService={idService} />
             </div>
           </div>
         </div>
