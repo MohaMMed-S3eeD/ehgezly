@@ -4,6 +4,7 @@ import { db } from "@/lib/prisma";
 import { LoginSchema, RegisterSchema } from "@/validation/auth/auth";
 import { Role } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 type LoginType = {
     email: string;
@@ -41,6 +42,10 @@ export const LoginAction = async (formData: LoginType) => {
             password,
             redirect: false,
         });
+        revalidatePath("/profile");
+        revalidatePath("/providerDashboard");
+        revalidatePath("/customerDashboard");
+        revalidateTag("header");
     } catch (error) {
         console.log(error);
         return { error: "Login failed" };

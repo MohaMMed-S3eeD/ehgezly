@@ -10,12 +10,13 @@ export const Header = async () => {
       <nav className="flex gap-4">
         <Link href="/">Home</Link>
         <Link href="/profile">Profile</Link>
-
-        {user?.role === "PROVIDER" ? (
-          <Link href="/providerDashboard">Provider Dashboard</Link>
-        ) : (
-          <Link href="/customerDashboard">Customer Dashboard</Link>
-        )}
+        {user ? (
+          user.role === "PROVIDER" ? (
+            <Link href="/providerDashboard"> Dashboard</Link>
+          ) : (
+            <Link href="/customerDashboard"> Dashboard</Link>
+          )
+        ) : null}
       </nav>
       <div>
         <AuthBtn />

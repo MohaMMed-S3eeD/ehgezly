@@ -114,7 +114,7 @@ export const deleteService = async (
     }
 };
 
-export const getServices = async () => {
+export const getServicesToProvider = async () => {
     const user = await getUser();
     if (!user) {
         return { success: false, message: ["User not found"] } as const;
@@ -148,5 +148,24 @@ export const getServiceById = async (id: string) => {
     } catch (error) {
         console.log(error);
         return { success: false, message: ["Failed to fetch service"] } as const;
+    }
+};
+
+export const getServices = async () => {
+    const user = await getUser();
+    if (!user) {
+        return { success: false, message: ["User not found"] } as const;
+    }
+    try {
+        const services = await db.service.findMany({
+            include: {
+                slots: true,
+                provider: true,
+            },
+        });
+        return { success: true, data: services } as const;
+    } catch (error) {
+        console.log(error);
+        return { success: false, message: ["Failed to fetch services"] } as const;
     }
 };

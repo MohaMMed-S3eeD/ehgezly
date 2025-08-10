@@ -6,12 +6,13 @@ import Link from "next/link";
 import { LoginSchema } from "@/validation/auth/auth";
 import { toast } from "sonner";
 import { LoginAction } from "../../_actions/auth.action";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 const Form = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const handleLogin = async () => {
     const data = {
       email,
@@ -69,14 +70,17 @@ const Form = () => {
       setIsLoading(false);
     }
 
-    redirect("/profile");
+    router.replace("/profile");
+    router.refresh();
   };
   return (
     <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md w-full">
+      
       <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
         Login
       </h1>
       <form className="space-y-4">
+       
         <Input
           type="email"
           placeholder="Email"
@@ -103,6 +107,10 @@ const Form = () => {
         </Button>
         <Link href="/register">Register</Link>
       </form>
+      <div>
+          <p>Provider@gmail.com</p>
+          <p>Customer@gmail.com</p>
+        </div>
     </div>
   );
 };

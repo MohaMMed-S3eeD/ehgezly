@@ -1,11 +1,13 @@
 import { auth } from "@/auth";
 import { db } from "@/lib/prisma";
+import { unstable_noStore as noStore } from "next/cache";
 
 
 
 
 
 export const getUser = async () => {
+    noStore();
     const session = await auth();
     const user = session?.user?.id ? await db.user.findUnique({
         where: { id: session.user.id },
