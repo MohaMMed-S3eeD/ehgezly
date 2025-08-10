@@ -17,6 +17,7 @@ const AddSlotPage = () => {
   const [endTime, setEndTime] = useState("");
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [state, action, isPending] = useActionState(addSlot, initialState);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   const y = date?.getFullYear();
   const m = date ? date.getMonth() : undefined;
   const d = date?.getDate();
@@ -32,6 +33,8 @@ const AddSlotPage = () => {
   useEffect(() => {
     if (state?.success) {
       toast.success(state.message[0]);
+      // تحديث البيانات بعد إضافة slot بنجاح
+      setRefreshTrigger(prev => prev + 1);
     }
     if (state?.success === false) {
       const values = Object.values(state.message).flat();
@@ -39,16 +42,27 @@ const AddSlotPage = () => {
     }
   }, [state]);
   return (
-    <div>
-      <div className="mx-auto max-w-2xl p-6">
-        <h1 className="text-2xl font-semibold">Add Slot</h1>
-        <p className="mt-1 text-muted-foreground">
-          Create a new time slot for your service.
-        </p>
+    <div className="mx-auto max-w-5xl p-6">
+      <div className="mb-6 flex items-start justify-between">
         <div>
-          <PrevSlots />
+          <h1 className="text-2xl font-semibold tracking-tight">Add Service Slot</h1>
+          <p className="mt-1 text-sm text-muted-foreground">Create a new slot for your service and choose date & time.</p>
         </div>
-        <form className="mt-6 space-y-4" action={action}>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-5">
+        <div className="md:col-span-3">
+          <div className="rounded-xl border bg-card/50 shadow-sm">
+            <div className="border-b px-4 py-3">
+              <div className="text-sm font-medium">Preview</div>
+            </div>
+            <div className="p-4">
+              <PrevSlots refreshTrigger={refreshTrigger} date={date} />
+            </div>
+          </div>
+        </div>
+
+        <form className="md:col-span-2 space-y-4 rounded-xl border bg-card/50 p-4 shadow-sm md:sticky md:top-4 h-fit" action={action}>
           <input type="hidden" name="idService" value={idService} />
           {/**
            * نرسل التاريخ بصيغة محلية ثابتة YYYY-MM-DD بدل ISO لتجنب تحوّل اليوم حسب الـ timezone
@@ -127,7 +141,7 @@ const AddSlotPage = () => {
           <input type="hidden" name="startTime" value={startTime} />
           <input type="hidden" name="endTime" value={endTime} />
           <div className="space-y-2">
-            <label className="text-sm font-medium">Select Time</label>
+            <label className="text-sm font-medium">Select time</label>
             <TimeRangePicker
               startTime={startTime}
               endTime={endTime}
@@ -137,7 +151,7 @@ const AddSlotPage = () => {
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium">Select Date</label>
+            <label className="text-sm font-medium">Select date</label>
             <Calendar
               mode="single"
               selected={date}
@@ -147,9 +161,9 @@ const AddSlotPage = () => {
             />
           </div>
 
-          <div className="pt-2">
-            <Button type="submit" disabled={isPending}>
-              {isPending ? "Adding..." : "Add Slot"}
+          <div className="flex items-center justify-end gap-2 pt-2">
+            <Button type="submit" variant="secondary" disabled={isPending}>
+              {isPending ? "Saving..." : "Save"}
             </Button>
           </div>
         </form>

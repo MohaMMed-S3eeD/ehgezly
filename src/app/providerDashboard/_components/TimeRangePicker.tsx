@@ -97,13 +97,13 @@ function TimeDropdown({
       {open ? (
         <div
           role="dialog"
-          className="absolute z-50 mt-2 w-[220px] rounded-md border bg-popover p-2 shadow-md left-0"
+          className="absolute z-50 mt-2 w-[240px] max-w-[min(90vw,260px)] rounded-md border bg-popover p-2 shadow-md left-0"
         >
           <div className="mb-1 text-xs text-muted-foreground">Select time</div>
           <div className="flex gap-2">
             <div className="flex-1 min-w-0">
               <div className="mb-1 text-[10px] text-muted-foreground">Hour</div>
-              <div className="flex flex-col gap-1 max-h-48 overflow-auto pl-1">
+              <div className="flex flex-col gap-1 max-h-48 overflow-auto pl-1 pr-1">
                 {hours12.map((h12) => (
                   <Button
                     key={h12}
@@ -126,7 +126,7 @@ function TimeDropdown({
               <div className="mb-1 text-[10px] text-muted-foreground">
                 Minute
               </div>
-              <div className="flex flex-col gap-1 max-h-48 overflow-auto pl-1">
+              <div className="flex flex-col gap-1 max-h-48 overflow-auto pl-1 pr-1">
                 {minutes.map((m) => (
                   <Button
                     key={m}
@@ -205,29 +205,45 @@ export default function TimeRangePicker({
   return (
     <div
       dir="ltr"
-      className="group flex items-center gap-2 rounded-lg border bg-background/70 px-3 py-2 w-fit shadow-xs border-input hover:shadow-sm focus-within:ring-2 focus-within:ring-ring/40 transition"
+      className="group flex flex-wrap items-center gap-3 rounded-lg border bg-background/70 px-3 py-3 w-full sm:w-fit max-w-full shadow-xs border-input hover:shadow-sm focus-within:ring-2 focus-within:ring-ring/40 transition"
     >
       {/* Start time */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 min-w-[220px]">
         <span className="text-xs text-muted-foreground">From</span>
-        <TimeDropdown
-          value={startTime}
-          onChange={setStartTime}
-          placeholder="Select"
-        />
+        <div className="block sm:hidden">
+          <input
+            type="time"
+            className="h-9 rounded-md border bg-background px-2 text-sm"
+            value={startTime}
+            onChange={(e) => setStartTime(e.target.value)}
+            aria-label="Start time"
+            title="Start time"
+          />
+        </div>
+        <div className="hidden sm:block">
+          <TimeDropdown value={startTime} onChange={setStartTime} placeholder="Select" />
+        </div>
       </div>
 
       {/* Arrow */}
       <span className="mx-1 text-muted-foreground">→</span>
 
       {/* End time */}
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 min-w-[220px]">
         <span className="text-xs text-muted-foreground">To</span>
-        <TimeDropdown
-          value={endTime}
-          onChange={setEndTime}
-          placeholder="Select"
-        />
+        <div className="block sm:hidden">
+          <input
+            type="time"
+            className="h-9 rounded-md border bg-background px-2 text-sm"
+            value={endTime}
+            onChange={(e) => setEndTime(e.target.value)}
+            aria-label="End time"
+            title="End time"
+          />
+        </div>
+        <div className="hidden sm:block">
+          <TimeDropdown value={endTime} onChange={setEndTime} placeholder="Select" />
+        </div>
       </div>
 
       {/* Clear button */}
@@ -236,7 +252,7 @@ export default function TimeRangePicker({
         onClick={clearTimes}
         variant="ghost"
         size="sm"
-        className="mr-1 size-8 p-0 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent"
+        className="mr-1 size-8 p-0 rounded-full text-muted-foreground hover:text-foreground hover:bg-accent ml-auto"
         aria-label="Clear time"
         title="Clear time"
       >

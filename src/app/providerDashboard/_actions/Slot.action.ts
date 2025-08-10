@@ -3,6 +3,7 @@
 import { db } from "@/lib/prisma";
 import { getUser } from "@/utils/user";
 import addSlotValid from "@/validation/ProviderDash/addSlotValid";
+import { revalidatePath } from "next/cache";
 
 
 export const addSlot = async (
@@ -144,6 +145,10 @@ export const addSlot = async (
             }
         });
         console.log("server", service);
+        // إعادة التحقق من المسارات التي قد تعرض slots
+        revalidatePath(`/providerDashboard/addSlot/${result.data.idService}`);
+        revalidatePath('/providerDashboard');
+        revalidatePath('/providerDashboard/bookings');
         return { success: true, message: ["Slot added successfully"] } as const;
     } catch (error) {
         console.log(error);
