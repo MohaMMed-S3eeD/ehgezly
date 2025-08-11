@@ -43,14 +43,21 @@ export const Header = async () => {
             >
               Profile
             </Link>
-            {dashboardHref ? (
+            {dashboardHref && user?.role === "CUSTOMER" ? (
               <Link
                 href={dashboardHref}
                 className="rounded-md px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-accent"
               >
+                My Bookings
+              </Link>
+            ) : (
+              <Link
+                href={"/providerDashboard"}
+                className="rounded-md px-3 py-2 text-muted-foreground hover:text-foreground hover:bg-accent"
+              >
                 Dashboard
               </Link>
-            ) : null}
+            )}
           </nav>
         </div>
 

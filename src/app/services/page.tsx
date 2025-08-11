@@ -1,6 +1,7 @@
 import React from "react";
 import { getServices } from "../providerDashboard/_actions/Service.action";
 import { CalendarDays, Clock, DollarSign, User2 } from "lucide-react";
+import Link from "next/link";
 
 function formatPriceEGP(value: number) {
   try {
@@ -45,7 +46,9 @@ export default async function Page() {
       <div className="flex items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Services</h1>
-          <p className="mt-1 text-sm text-muted-foreground">Discover available services and book the best time for you</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Discover available services and book the best time for you
+          </p>
         </div>
         {servicesRes.data ? (
           <span className="hidden text-sm text-muted-foreground sm:inline">
@@ -61,11 +64,13 @@ export default async function Page() {
             .filter((s) => !s.isBooked && new Date(s.endTime) > now)
             .sort(
               (a, b) =>
-                new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+                new Date(a.startTime).getTime() -
+                new Date(b.startTime).getTime()
             )
             .slice(0, 3);
 
-          const providerName = service.provider?.name || service.provider?.email || "Provider";
+          const providerName =
+            service.provider?.name || service.provider?.email || "Provider";
           const initials = providerName
             .split(" ")
             .map((w) => w.charAt(0))
@@ -74,14 +79,17 @@ export default async function Page() {
             .toUpperCase();
 
           return (
-            <div
+            <Link
               key={service.id}
               className="group relative overflow-hidden rounded-2xl border bg-card/60 p-5 shadow-sm ring-1 ring-transparent transition-all hover:shadow-lg"
+              href={`/services/${service.id}`}
             >
               <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
               {/* available count badge */}
               {(() => {
-                const count = service.slots.filter((s) => !s.isBooked && new Date(s.endTime) > now).length;
+                const count = service.slots.filter(
+                  (s) => !s.isBooked && new Date(s.endTime) > now
+                ).length;
                 return (
                   <span className="absolute right-4 top-4 rounded-full border bg-background/80 px-2.5 py-1 text-xs font-medium shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60">
                     {count} available
@@ -113,7 +121,9 @@ export default async function Page() {
               <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
                 <span className="inline-flex items-center gap-1.5 rounded-md border px-2 py-1">
                   <DollarSign className="size-3.5 opacity-70" />
-                  <span className="font-medium">{formatPriceEGP(Number(service.price))}</span>
+                  <span className="font-medium">
+                    {formatPriceEGP(Number(service.price))}
+                  </span>
                 </span>
                 <span className="inline-flex items-center gap-1.5 rounded-md border px-2 py-1">
                   <Clock className="size-3.5 opacity-70" />
@@ -155,10 +165,11 @@ export default async function Page() {
 
               <div className="mt-5 flex items-center justify-between text-xs text-muted-foreground">
                 <span>
-                  Added on {new Date(service.createdAt).toLocaleDateString("en-GB")}
+                  Added on{" "}
+                  {new Date(service.createdAt).toLocaleDateString("en-GB")}
                 </span>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

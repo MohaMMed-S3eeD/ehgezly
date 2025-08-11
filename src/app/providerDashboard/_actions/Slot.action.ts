@@ -165,6 +165,15 @@ export const getSlots = async () => {
     }
     const slots = await db.slot.findMany({
         where: { service: { providerId: user.id } },
+        include: {
+            service: { select: { id: true, title: true } },
+            booking: {
+                include: {
+                    customer: { select: { id: true, name: true, email: true } },
+                },
+            },
+        },
+        orderBy: { startTime: "asc" },
     });
     return { success: true, data: slots } as const;
 };

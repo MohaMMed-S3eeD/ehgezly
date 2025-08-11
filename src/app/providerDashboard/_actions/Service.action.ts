@@ -133,13 +133,10 @@ export const getServicesToProvider = async () => {
     }
 };
 export const getServiceById = async (id: string) => {
-    const user = await getUser();
-    if (!user) {
-        return { success: false, message: ["User not found"] } as const;
-    }
+
     try {
         const service = await db.service.findUnique({
-            where: { id, providerId: user.id },
+            where: { id },
             include: {
                 slots: true,
             },
