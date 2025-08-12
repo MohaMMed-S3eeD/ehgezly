@@ -23,11 +23,15 @@ const page = async () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="rounded-lg border bg-background/60 p-4">
               <div className="text-xs text-muted-foreground mb-1">Name</div>
-              <div className="text-sm font-medium">{user?.name || "Not available"}</div>
+              <div className="text-sm font-medium">
+                {user?.name || "Not available"}
+              </div>
             </div>
             <div className="rounded-lg border bg-background/60 p-4">
               <div className="text-xs text-muted-foreground mb-1">Email</div>
-              <div className="text-sm font-medium">{user?.email || "Not available"}</div>
+              <div className="text-sm font-medium">
+                {user?.email || "Not available"}
+              </div>
             </div>
             <div className="rounded-lg border bg-background/60 p-4">
               <div className="text-xs text-muted-foreground mb-1">Role</div>
@@ -48,7 +52,9 @@ const page = async () => {
               </span>
             </div>
             <div className="rounded-lg border bg-background/60 p-4">
-              <div className="text-xs text-muted-foreground mb-1">Member Since</div>
+              <div className="text-xs text-muted-foreground mb-1">
+                Member Since
+              </div>
               <div className="text-sm font-medium">
                 {user?.createdAt?.toLocaleDateString() || "Not available"}
               </div>
@@ -58,34 +64,47 @@ const page = async () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="rounded-xl border bg-card/50 shadow-sm">
-          <div className="border-b px-4 py-3">
-            <h2 className="text-sm font-medium">Bookings</h2>
-          </div>
-          <div className="p-6">
-            <div className="text-3xl font-bold">{user?.bookings?.length || 0}</div>
-            <p className="text-sm text-muted-foreground">Total bookings</p>
-          </div>
-        </div>
-
-        <div className="rounded-xl border bg-card/50 shadow-sm">
-          <div className="border-b px-4 py-3">
-            <h2 className="text-sm font-medium">Services</h2>
-          </div>
-          <div className="p-6 space-y-3">
-            <div className="text-3xl font-bold">{user?.services?.length || 0}</div>
-            <p className="text-sm text-muted-foreground">Available services</p>
-            {user?.services && user.services.length > 0 && (
-              <div className="flex flex-wrap gap-2 pt-2">
-                {user.services.map((service) => (
-                  <span key={service.id} className="inline-flex items-center rounded-full bg-muted px-2.5 py-1 text-xs">
-                    {service.title}
-                  </span>
-                ))}
+        {user?.role === "CUSTOMER" && (
+          <div className="rounded-xl border bg-card/50 shadow-sm">
+            <div className="border-b px-4 py-3">
+              <h2 className="text-sm font-medium">Bookings</h2>
+            </div>
+            <div className="p-6">
+              <div className="text-3xl font-bold">
+                {user?.bookings?.length || 0}
               </div>
-            )}
+              <p className="text-sm text-muted-foreground">Total bookings</p>
+            </div>
           </div>
-        </div>
+        )}
+
+        {user?.role === "PROVIDER" && (
+          <div className="rounded-xl border bg-card/50 shadow-sm">
+            <div className="border-b px-4 py-3">
+              <h2 className="text-sm font-medium">Services</h2>
+            </div>
+            <div className="p-6 space-y-3">
+              <div className="text-3xl font-bold">
+                {user?.services?.length || 0}
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Available services
+              </p>
+              {user?.services && user.services.length > 0 && (
+                <div className="flex flex-wrap gap-2 pt-2">
+                  {user.services.map((service) => (
+                    <span
+                      key={service.id}
+                      className="inline-flex items-center rounded-full bg-muted px-2.5 py-1 text-xs"
+                    >
+                      {service.title}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

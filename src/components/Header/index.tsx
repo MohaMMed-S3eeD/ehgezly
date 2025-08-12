@@ -13,7 +13,7 @@ export const Header = async () => {
   const dashboardHref = user
     ? user.role === "PROVIDER"
       ? "/providerDashboard"
-      : "/customerDashboard"
+      : "/bookings"
     : null;
 
   return (
