@@ -5,29 +5,29 @@ import Link from "next/link";
 
 function formatPriceEGP(value: number) {
   try {
-    return new Intl.NumberFormat("en-EG", {
+    return new Intl.NumberFormat("ar-EG", {
       style: "currency",
       currency: "EGP",
       maximumFractionDigits: 0,
     }).format(value);
   } catch {
-    return `${value} EGP`;
+    return `${value} جنيه`;
   }
 }
 
 function formatTimeRange(start: Date, end: Date) {
   try {
-    const startStr = new Intl.DateTimeFormat("en-GB", {
+    const startStr = new Intl.DateTimeFormat("ar-EG", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
     }).format(start);
-    const endStr = new Intl.DateTimeFormat("en-GB", {
+    const endStr = new Intl.DateTimeFormat("ar-EG", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: true,
     }).format(end);
-    const dayStr = new Intl.DateTimeFormat("en-GB", {
+    const dayStr = new Intl.DateTimeFormat("ar-EG", {
       weekday: "short",
       month: "short",
       day: "2-digit",
@@ -42,17 +42,17 @@ export default async function Page() {
   const servicesRes = await getServices();
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8">
+    <div className="mx-auto max-w-7xl px-4 py-8" dir="rtl">
       <div className="flex items-end justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Services</h1>
+          <h1 className="text-2xl font-bold tracking-tight">الخدمات</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Discover available services and book the best time for you
+            اكتشف الخدمات المتاحة واحجز أفضل وقت يناسبك
           </p>
         </div>
         {servicesRes.data ? (
           <span className="hidden text-sm text-muted-foreground sm:inline">
-            {servicesRes.data.length} services
+            {servicesRes.data.length} خدمة
           </span>
         ) : null}
       </div>
@@ -70,7 +70,7 @@ export default async function Page() {
             .slice(0, 3);
 
           const providerName =
-            service.provider?.name || service.provider?.email || "Provider";
+            service.provider?.name || service.provider?.email || "مقدم الخدمة";
           const initials = providerName
             .split(" ")
             .map((w) => w.charAt(0))
@@ -81,7 +81,7 @@ export default async function Page() {
           return (
             <Link
               key={service.id}
-              className="group relative overflow-hidden rounded-2xl border bg-card/60 p-5 shadow-sm ring-1 ring-transparent transition-all hover:shadow-lg"
+              className="group relative overflow-hidden rounded-2xl border bg-card/60 p-5 shadow-sm ring-1 ring-transparent transition-all hover:shadow-lg hover:border-primary/20"
               href={`/services/${service.id}`}
             >
               <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
@@ -91,14 +91,14 @@ export default async function Page() {
                   (s) => !s.isBooked && new Date(s.endTime) > now
                 ).length;
                 return (
-                  <span className="absolute right-4 top-4 rounded-full border bg-background/80 px-2.5 py-1 text-xs font-medium shadow-sm backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                    {count} available
+                  <span className="absolute left-4 top-4 rounded-full border bg-primary/10 border-primary/20 px-2.5 py-1 text-xs font-medium shadow-sm backdrop-blur text-primary">
+                    {count} متوفر
                   </span>
                 );
               })()}
 
               <div className="flex items-center gap-3">
-                <div className="flex size-10 items-center justify-center rounded-full bg-muted text-sm font-semibold">
+                <div className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary border border-primary/20">
                   {initials}
                 </div>
                 <div className="min-w-0">
@@ -106,35 +106,35 @@ export default async function Page() {
                     <User2 className="size-3.5" />
                     <span className="truncate">{providerName}</span>
                   </div>
-                  <h3 className="truncate text-base font-semibold tracking-tight">
+                  <h3 className="truncate text-base font-semibold tracking-tight text-foreground">
                     {service.title}
                   </h3>
                 </div>
               </div>
 
               {service.description ? (
-                <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                <p className="mt-2 line-clamp-2 text-sm text-muted-foreground leading-relaxed">
                   {service.description}
                 </p>
               ) : null}
 
               <div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
-                <span className="inline-flex items-center gap-1.5 rounded-md border px-2 py-1">
-                  <DollarSign className="size-3.5 opacity-70" />
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-primary/20 bg-primary/5 px-2 py-1 text-primary">
+                  <DollarSign className="size-3.5" />
                   <span className="font-medium">
                     {formatPriceEGP(Number(service.price))}
                   </span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 rounded-md border px-2 py-1">
+                <span className="inline-flex items-center gap-1.5 rounded-md border border-muted px-2 py-1 bg-muted/50">
                   <Clock className="size-3.5 opacity-70" />
-                  <span className="font-medium">{service.duration} min</span>
+                  <span className="font-medium">{service.duration} دقيقة</span>
                 </span>
               </div>
 
-              <div className="mt-5 border-t pt-4">
+              <div className="mt-5 border-t border-border/50 pt-4">
                 <div className="mb-2 flex items-center gap-2 text-xs font-medium text-muted-foreground">
                   <CalendarDays className="size-4" />
-                  <span>Upcoming slots</span>
+                  <span>الحجوزات القادمة</span>
                 </div>
 
                 {upcomingSlots.length > 0 ? (
@@ -142,7 +142,7 @@ export default async function Page() {
                     {upcomingSlots.map((slot) => (
                       <li
                         key={slot.id}
-                        className="flex items-center justify-between rounded-lg border px-3 py-2 text-sm"
+                        className="flex items-center justify-between rounded-lg border border-border/50 bg-background/50 px-3 py-2 text-sm transition-colors hover:bg-background/80"
                       >
                         <span className="truncate">
                           {formatTimeRange(
@@ -151,22 +151,22 @@ export default async function Page() {
                           )}
                         </span>
                         <span className="rounded-md bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">
-                          Available
+                          متاح
                         </span>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <div className="rounded-lg border border-dashed px-3 py-6 text-center text-sm text-muted-foreground">
-                    No slots available at the moment
+                  <div className="rounded-lg border border-dashed border-muted px-3 py-6 text-center text-sm text-muted-foreground bg-muted/20">
+                    لا توجد حجوزات متاحة في الوقت الحالي
                   </div>
                 )}
               </div>
 
-              <div className="mt-5 flex items-center justify-between text-xs text-muted-foreground">
+              <div className="mt-5 flex items-center justify-between text-xs text-muted-foreground border-t border-border/30 pt-3">
                 <span>
-                  Added on{" "}
-                  {new Date(service.createdAt).toLocaleDateString("en-GB")}
+                  تم الإضافة في{" "}
+                  {new Date(service.createdAt).toLocaleDateString("ar-EG")}
                 </span>
               </div>
             </Link>

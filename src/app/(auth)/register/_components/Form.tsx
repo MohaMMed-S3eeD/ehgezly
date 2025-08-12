@@ -65,8 +65,8 @@ const Form = () => {
     }
   };
   return (
-    <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md w-full">
-      <h1 className="text-2xl font-bold text-center mb-6 text-gray-800">
+    <div className="max-w-md mx-auto rounded-lg shadow-md w-full border bg-card/60">
+      <h1 className="text-2xl font-bold text-center mb-6 text-foreground">
         Register
       </h1>
       <form className="space-y-4">
@@ -104,10 +104,11 @@ const Form = () => {
         </div>
         <Button
           type="button"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-200"
+          className="w-full"
           onClick={() => {
             handleRegister();
           }}
+          variant="default"
         >
           Register
         </Button>

@@ -131,13 +131,13 @@ const page = async () => {
                           <div className="flex items-center gap-2 sm:ml-auto">
                             <form action={cancelBooking}>
                               <input type="hidden" name="bookingId" value={booking!.id} />
-                              <Button variant="outline" className="hover:bg-[#C9194D] hover:text-white">
+                              <Button variant="outline" className="hover:bg-rose-600 hover:text-primary-foreground">
                                 Reject
                               </Button>
                             </form>
                             <form action={confirmBooking}>
                               <input type="hidden" name="bookingId" value={booking!.id} />
-                              <Button variant="outline" className="hover:bg-[#007A55] hover:text-white">
+                              <Button variant="outline" className="hover:bg-emerald-600 hover:text-primary-foreground">
                                 Accept
                               </Button>
                             </form>

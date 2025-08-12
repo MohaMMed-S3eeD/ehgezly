@@ -12,7 +12,7 @@ const ThemeBtn = () => {
       variant="ghost"
       size="icon"
       aria-label="Toggle theme"
-      className="hidden sm:inline-flex"
+      className="hidden sm:inline-flex text-foreground"
     >
       {theme === "light" ? (
         <Sun className="size-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
