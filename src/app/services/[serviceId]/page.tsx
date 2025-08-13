@@ -3,20 +3,20 @@ import React from "react";
 import ServiceDetails from "./_components/ServiceDetails";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     serviceId: string;
-  };
+  }>;
 }
 
 const Page = async ({ params }: PageProps) => {
-  const { serviceId } = params;
+  const { serviceId } = await params;
   const res = await getServiceById(serviceId);
   const service = res.data;
 
   if (!service) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-10">
-        <h1 className="text-xl font-semibold">الخدمة غير موجودة</h1>
+        <h1 className="text-xl font-semibold">Service does not exist</h1>  
       </div>
     );
   }
