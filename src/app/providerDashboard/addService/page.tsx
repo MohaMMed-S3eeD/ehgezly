@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { addService } from "../_actions/Service.action";
 import { toast } from "sonner";
+import CloudinaryUploader from "@/components/Upload/CloudinaryUploader";
 
 type AddServiceState = Awaited<ReturnType<typeof addService>>;
 const initialState: AddServiceState | null = null;
@@ -16,6 +17,7 @@ const AddServicePage = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [duration, setDuration] = useState("");
+  const [image, setImage] = useState<string>("");
 
   useEffect(() => {
     if (state?.success) {
@@ -44,6 +46,9 @@ const AddServicePage = () => {
               <div className="text-sm font-medium">Preview</div>
             </div>
             <div className="p-4 space-y-3">
+              {image ? (
+                <img src={image} alt="Preview" className="h-40 w-full rounded-md object-cover" />
+              ) : null}
               <div className="text-lg font-semibold">
                 {title || "Service title"}
               </div>
@@ -68,6 +73,7 @@ const AddServicePage = () => {
           className="md:col-span-2 space-y-4 rounded-xl border bg-card/50 p-4 shadow-sm md:sticky md:top-4 h-fit"
           action={action}
         >
+          <input type="hidden" name="image" value={image} />
           <div className="space-y-2">
             <label htmlFor="title" className="text-sm font-medium">
               Title
@@ -92,6 +98,7 @@ const AddServicePage = () => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </div>
+          <CloudinaryUploader onUploadComplete={({ url }) => setImage(url)} folder="app-uploads/services" />
           <div className="space-y-2">
             <label htmlFor="price" className="text-sm font-medium">
               Price (EGP)

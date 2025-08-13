@@ -14,6 +14,7 @@ export const addService = async (
     const description = formData.get("description");
     const price = formData.get("price");
     const duration = formData.get("duration");
+    const image = formData.get("image");
     const user = await getUser();
     const result = addServiceValid.safeParse({
         title: title as string,
@@ -37,6 +38,7 @@ export const addService = async (
                 price: Number(price),
                 providerId: user.id,
                 duration: Number(duration),
+                image: (typeof image === "string" && image.trim() !== "") ? image as string : null,
             },
         });
         console.log("server", service);
@@ -58,6 +60,7 @@ export const editService = async (
     const description = formData.get("description");
     const price = formData.get("price");
     const duration = formData.get("duration");
+    const image = formData.get("image");
     const user = await getUser();
     const result = addServiceValid.safeParse({
         title: title as string,
@@ -81,6 +84,7 @@ export const editService = async (
                 description: description as string,
                 price: Number(price),
                 duration: Number(duration),
+                image: (typeof image === "string" && image.trim() !== "") ? image as string : null,
             },
         });
         console.log("server", service);

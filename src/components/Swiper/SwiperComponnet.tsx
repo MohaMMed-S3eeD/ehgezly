@@ -64,9 +64,7 @@ const SwiperComponent = () => {
                       {item.price} EGP
                     </span>
                     <Image
-                      src={
-                        "https://i.pinimg.com/1200x/7a/f9/0f/7af90f7bf9c53586eb8347feac6d7a6d.jpg"
-                      }
+                      src={item.image || ""}
                       alt={item.provider?.name || "service image"}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
