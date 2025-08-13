@@ -1,36 +1,141 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 Ehgezly
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)](https://prisma.io/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![NextAuth](https://img.shields.io/badge/NextAuth-5.0-brightgreen?style=for-the-badge&logo=auth0&logoColor=white)](https://next-auth.js.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white)](https://cloudinary.com/)
+[![Zod](https://img.shields.io/badge/Zod-FF6B35?style=for-the-badge&logo=zod&logoColor=white)](https://zod.dev/)
+[![GSAP](https://img.shields.io/badge/GSAP-88CE02?style=for-the-badge&logo=greensock&logoColor=white)](https://greensock.com/gsap/)
 
-First, run the development server:
+**منصة حجز خدمات متكاملة** - احجز خدمتك بسهولة من أي مكان
+
+## ✨ المزايا الرئيسية
+
+🎯 **نظام حجوزات** - PROVIDER ينشئ خدمات ومواعيد، CUSTOMER يحجز  
+🔐 **مصادقة آمنة** - GitHub, Google, Credentials مع NextAuth v5  
+📱 **واجهة عصرية** - Tailwind CSS + Radix UI متجاوبة  
+☁️ **رفع صور** - Cloudinary مع توقيع آمن  
+⚡ **أداء عالي** - Next.js 15 + React 19 + TypeScript
+
+## 🛠️ التقنيات
+
+- **Frontend:** Next.js 15, React 19, TypeScript, Tailwind CSS
+- **Backend:** Prisma ORM, PostgreSQL, NextAuth v5, bcryptjs
+- **UI:** Radix UI, Lucide Icons, Sonner, GSAP, react-day-picker
+- **Validation:** Zod schemas للتحقق من البيانات
+- **Themes:** next-themes للنمط الداكن/الفاتح
+- **Cloud:** Cloudinary للصور
+
+## 🚀 البدء السريع
 
 ```bash
+# 1. Clone المشروع
+git clone <repo-url>
+cd ehgezly
+
+# 2. تثبيت الاعتمادات
+npm install
+
+# 3. إعداد قاعدة البيانات
+npx prisma migrate dev
+npx prisma generate
+
+# 4. تشغيل المشروع
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### ⚙️ متغيرات البيئة
+```env
+# قاعدة البيانات
+DATABASE_URL="postgresql://user:pass@localhost:5432/ehgezly"
+DIRECT_URL="postgresql://user:pass@localhost:5432/ehgezly"
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# NextAuth
+AUTH_SECRET="your-secret-key-here"
+GITHUB_ID="your-github-id"
+GITHUB_SECRET="your-github-secret"
+GOOGLE_ID="your-google-id"
+GOOGLE_SECRET="your-google-secret"
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# Cloudinary
+CLOUDINARY_CLOUD_NAME="your-cloud-name"
+CLOUDINARY_API_KEY="your-api-key"
+CLOUDINARY_API_SECRET="your-api-secret"
+```
 
-## Learn More
+## 📂 بنية المشروع
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/
+│   ├── (auth)/              # login, register
+│   ├── api/                 # NextAuth, Cloudinary
+│   ├── services/            # عرض الخدمات والحجز
+│   ├── bookings/            # حجوزات العميل
+│   ├── providerDashboard/   # لوحة المزود + إدارة الخدمات
+│   └── profile/             # الملف الشخصي
+├── components/
+│   ├── ui/                  # Button, Input, Dialog...
+│   └── Upload/              # CloudinaryUploader
+├── lib/                     # prisma, cloudinary, utils
+└── auth.ts                  # NextAuth config
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🗃️ قاعدة البيانات
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+# إدارة البيانات محلياً
+npx prisma studio
+```
 
-## Deploy on Vercel
+**النماذج:**
+- `User` → أدوار: PROVIDER, CUSTOMER 
+- `Service` → خدمات المزودين مع صور
+- `Slot` → المواعيد المتاحة
+- `Booking` → حالات: PENDING, CONFIRMED, CANCELLED
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔐 المصادقة
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+✅ **NextAuth v5** - GitHub, Google, Credentials  
+✅ **حماية المسارات** - Middleware حسب الدور  
+✅ **جلسات JWT** - آمنة وسريعة
+
+**المسارات:**
+- `/` - الرئيسية
+- `/services` - عرض الخدمات  
+- `/bookings` - حجوزات العميل
+- `/providerDashboard` - لوحة المزود
+- `/profile` - الملف الشخصي
+
+## ☁️ Cloudinary
+
+```tsx
+<CloudinaryUploader 
+  onUploadComplete={({ url }) => setImage(url)} 
+/>
+```
+
+## 🚀 النشر
+
+**Vercel (موصى به):**
+1. ربط المستودع
+2. إضافة متغيرات البيئة
+3. ربط قاعدة PostgreSQL
+4. Deploy!
+
+## 📚 التوثيق
+
+- [📅 تدفق التواريخ](docs/datetime-flow.md)
+- [📸 رفع الصور](docs/cloudinary-image-upload.md)
+
+---
+
+<div align="center">
+
+**🛠️ تم بناؤه بـ Next.js 15 & TypeScript**
+
+</div>
