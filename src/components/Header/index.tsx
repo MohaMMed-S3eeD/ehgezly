@@ -17,7 +17,7 @@ export const Header = async () => {
     : null;
 
   return (
-    <header className="sticky top-5 z-40 mt-3 w-[92%] max-w-6xl mx-auto rounded-2xl glass">
+    <header className="sticky top-5 z-40 mt-3 w-[92%] max-w-6xl mx-auto rounded-2xl glass animate-slide-down">
       <div className="mx-auto flex h-14 items-center justify-between gap-6 px-6">
         {/* Left: Brand + Primary nav */}
         <div className="flex min-w-0 items-center gap-6">
