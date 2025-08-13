@@ -4,6 +4,7 @@ import type { Service, Slot } from "@prisma/client";
 import { bookSlot } from "@/app/services/_actions/Booking.action";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 type ServiceWithSlots = Service & { slots: Slot[] };
 
@@ -65,18 +66,33 @@ const ServiceDetails: React.FC<Props> = ({ service }) => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">{service.title}</h1>
-        {service.description ? (
-          <p className="mt-2 text-muted-foreground">{service.description}</p>
+      <div className="relative w-full aspect-[4/3] md:aspect-[16/9] max-h-[440px] lg:max-h-[500px] overflow-hidden rounded-2xl border bg-muted">
+        {service.image ? (
+          <Image
+            src={service.image}
+            alt={service.title}
+            fill
+            sizes="100vw"
+            className="object-cover object-center"
+            priority
+          />
         ) : null}
-        <div className="mt-3 flex flex-wrap gap-2 text-sm">
-          <span className="inline-flex items-center gap-1 rounded-md border px-2 py-1">
-            Price: <span className="font-medium">{Number(service.price)} EGP</span>
-          </span>
-          <span className="inline-flex items-center gap-1 rounded-md border px-2 py-1">
-            Duration: <span className="font-medium">{service.duration} min</span>
-          </span>
+        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 p-4 sm:p-6">
+          <h1 className="text-2xl font-bold tracking-tight">{service.title}</h1>
+          {service.description ? (
+            <p className="mt-1 text-sm text-muted-foreground line-clamp-2">
+              {service.description}
+            </p>
+          ) : null}
+          <div className="mt-3 flex flex-wrap gap-2 text-sm">
+            <span className="inline-flex items-center gap-1 rounded-md border px-2 py-1">
+              Price: <span className="font-medium">{Number(service.price)} EGP</span>
+            </span>
+            <span className="inline-flex items-center gap-1 rounded-md border px-2 py-1">
+              Duration: <span className="font-medium">{service.duration} min</span>
+            </span>
+          </div>
         </div>
       </div>
 

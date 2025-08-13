@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { addService } from "../_actions/Service.action";
 import { toast } from "sonner";
 import CloudinaryUploader from "@/components/Upload/CloudinaryUploader";
+import Image from "next/image";
 
 type AddServiceState = Awaited<ReturnType<typeof addService>>;
 const initialState: AddServiceState | null = null;
@@ -45,25 +46,35 @@ const AddServicePage = () => {
             <div className="border-b px-4 py-3">
               <div className="text-sm font-medium">Preview</div>
             </div>
-            <div className="p-4 space-y-3">
-              {image ? (
-                <img src={image} alt="Preview" className="h-40 w-full rounded-md object-cover" />
-              ) : null}
-              <div className="text-lg font-semibold">
-                {title || "Service title"}
-              </div>
-              <div className="text-muted-foreground">
-                {description || "Service description"}
-              </div>
-              <div className="flex flex-wrap gap-6 text-sm">
-                <span>
-                  <span className="font-medium">Price:</span>{" "}
-                  {price ? `${price} EGP` : "-"}
-                </span>
-                <span>
-                  <span className="font-medium">Duration:</span>{" "}
-                  {duration ? `${duration} min` : "-"}
-                </span>
+            <div className="p-4">
+              <div className="relative w-full aspect-[4/3] overflow-hidden rounded-md border bg-muted">
+                {image ? (
+                  <Image
+                    src={image}
+                    alt="Preview"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover"
+                    priority
+                  />
+                ) : null}
+                <div className="absolute inset-0 bg-gradient-to-t from-background/85 via-background/20 to-transparent" />
+                <div className="absolute inset-x-0 bottom-0 p-3">
+                  <div className="text-base font-semibold">
+                    {title || "Service title"}
+                  </div>
+                  <div className="text-xs text-muted-foreground line-clamp-2">
+                    {description || "Service description"}
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                    <span className="inline-flex items-center gap-1 rounded-md bg-white/10 px-2 py-1 font-medium backdrop-blur">
+                      Price: {price ? `${price} EGP` : "-"}
+                    </span>
+                    <span className="inline-flex items-center gap-1 rounded-md bg-white/10 px-2 py-1 font-medium backdrop-blur">
+                      Duration: {duration ? `${duration} min` : "-"}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
