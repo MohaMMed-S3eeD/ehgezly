@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,36 +8,24 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-enum Role {
-  ADMIN
-  PROVIDER
-  CUSTOMER
-}
-
-enum BookingStatus {
-  PENDING
-  CONFIRMED
-  CANCELLED
-}
-
 model User {
   id        String    @id @default(cuid())
   name      String?
   email     String?   @unique
   password  String?
   role      Role      @default(CUSTOMER)
-  services  Service[] @relation("UserServices")
-  bookings  Booking[] @relation("UserBookings")
   createdAt DateTime  @default(now())
-  Account   Account[]
+  bookings  Booking[] @relation("UserBookings")
+  services  Service[] @relation("UserServices")
   Session   Session[]
+  Account   Account[]
 }
 
 model Account {
-  userId            String  @map("user_id")
+  userId            String   @map("user_id")
   type              String
   provider          String
-  providerAccountId String  @map("provider_account_id")
+  providerAccountId String   @map("provider_account_id")
   refresh_token     String?
   access_token      String?
   expires_at        Int?
@@ -51,11 +33,9 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
   @@map("accounts")
@@ -65,10 +45,9 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model VerificationToken {
@@ -83,13 +62,14 @@ model Service {
   id          String    @id @default(cuid())
   title       String
   description String
+  image       String?
   price       Float
-  duration    Int // المدة بالدقايق
-  provider    User      @relation("UserServices", fields: [providerId], references: [id])
+  duration    Int
   providerId  String
-  slots       Slot[]
-  bookings    Booking[]
   createdAt   DateTime  @default(now())
+  bookings    Booking[]
+  provider    User      @relation("UserServices", fields: [providerId], references: [id])
+  slots       Slot[]
 }
 
 model Slot {
@@ -97,19 +77,31 @@ model Slot {
   startTime DateTime
   endTime   DateTime
   isBooked  Boolean  @default(false)
-  service   Service  @relation(fields: [serviceId], references: [id])
   serviceId String
-  booking   Booking? // العلاقة العكسية بدون fields/references
+  booking   Booking?
+  service   Service  @relation(fields: [serviceId], references: [id])
 }
 
 model Booking {
   id         String        @id @default(cuid())
-  customer   User          @relation("UserBookings", fields: [customerId], references: [id])
   customerId String
-  service    Service       @relation(fields: [serviceId], references: [id])
   serviceId  String
-  slot       Slot          @relation(fields: [slotId], references: [id])
   slotId     String        @unique
   status     BookingStatus @default(PENDING)
   createdAt  DateTime      @default(now())
+  customer   User          @relation("UserBookings", fields: [customerId], references: [id])
+  service    Service       @relation(fields: [serviceId], references: [id])
+  slot       Slot          @relation(fields: [slotId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  PROVIDER
+  CUSTOMER
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
 }
