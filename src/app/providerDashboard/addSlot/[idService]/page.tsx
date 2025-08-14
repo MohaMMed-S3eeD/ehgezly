@@ -27,9 +27,7 @@ const AddSlotPage = () => {
     const mi = Math.max(0, Math.min(59, Number(mm || 0)));
     return { h, mi };
   };
-  useEffect(() => {
-    console.log(startTime, endTime, date);
-  }, [startTime, endTime, date]);
+
   useEffect(() => {
     if (state?.success) {
       toast.success(state.message[0]);
@@ -61,7 +59,11 @@ const AddSlotPage = () => {
               <div className="text-sm font-medium">Preview</div>
             </div>
             <div className="p-4">
-              <PrevSlots refreshTrigger={refreshTrigger} date={date} idService={idService} />
+              <PrevSlots
+                refreshTrigger={refreshTrigger}
+                date={date}
+                idService={idService}
+              />
             </div>
           </div>
         </div>
@@ -71,7 +73,7 @@ const AddSlotPage = () => {
           action={action}
         >
           <input type="hidden" name="idService" value={idService} />
-        
+
           <input
             type="hidden"
             name="date"

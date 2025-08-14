@@ -24,7 +24,6 @@ export const addSlot = async (
         date: date as string,
         idService: idService as string,
     });
-    console.log("error", result.error?.flatten().fieldErrors)
     if (!result.success) {
         return { success: false, message: result.error.flatten().fieldErrors as { title?: string[], description?: string[], price?: string[], duration?: string[] } } as const;
     }
@@ -147,7 +146,6 @@ export const addSlot = async (
             }
         });
         console.log("server", service);
-        // إعادة التحقق من المسارات التي قد تعرض slots
         revalidatePath(`/providerDashboard/addSlot/${result.data.idService}`);
         revalidatePath('/providerDashboard');
         revalidatePath('/providerDashboard/bookings');

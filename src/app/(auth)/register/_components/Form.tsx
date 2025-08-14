@@ -27,7 +27,6 @@ const Form = () => {
       role,
     };
     const validation = RegisterSchema.safeParse(data);
-    console.log(validation);
     if (!validation.success) {
       validation.error.issues.forEach((issue: { message: string }) => {
         toast.error(issue.message, {

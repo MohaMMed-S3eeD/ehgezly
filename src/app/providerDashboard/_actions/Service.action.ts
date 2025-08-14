@@ -22,7 +22,6 @@ export const addService = async (
         price: Number(price),
         duration: Number(duration),
     });
-    console.log(result.error?.flatten().fieldErrors)
     if (!result.success) {
         return { success: false, message: result.error.flatten().fieldErrors as { title?: string[], description?: string[], price?: string[], duration?: string[] } } as const;
     }
@@ -68,7 +67,6 @@ export const editService = async (
         price: Number(price),
         duration: Number(duration),
     });
-    console.log(result.error?.flatten().fieldErrors)
     if (!result.success) {
         return { success: false, message: result.error.flatten().fieldErrors as { title?: string[], description?: string[], price?: string[], duration?: string[] } } as const;
     }

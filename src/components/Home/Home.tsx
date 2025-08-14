@@ -12,21 +12,13 @@ const HomeComponent = () => {
     () => {
       const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
       tl.from(".hero-title", { y: 30, opacity: 0, duration: 0.8 })
-        .from(
-          ".hero-subtitle",
-          { y: 20, opacity: 0, duration: 0.6 },
-          "-=0.4"
-        )
+        .from(".hero-subtitle", { y: 20, opacity: 0, duration: 0.6 }, "-=0.4")
         .from(
           ".hero-cta",
           { y: 20, opacity: 0, duration: 0.5, stagger: 0.1 },
           "-=0.3"
         )
-        .from(
-          ".hero-logos",
-          { opacity: 0, duration: 0.6 },
-          "-=0.2"
-        );
+        .from(".hero-logos", { opacity: 0, duration: 0.6 }, "-=0.2");
 
       gsap.from(".hero-side", {
         x: (index: number) => (index === 0 ? -50 : 50),
@@ -38,7 +30,10 @@ const HomeComponent = () => {
   );
 
   return (
-    <section ref={containerRef} className="flex flex-col items-center justify-center gap-6 sm:gap-8 min-h-screen relative overflow-hidden px-4 sm:px-6">
+    <section
+      ref={containerRef}
+      className="flex flex-col items-center justify-center gap-6 sm:gap-8 min-h-screen relative overflow-hidden px-4 sm:px-6"
+    >
       <div className="hero-side h-full absolute left-0 top-0 hidden md:block pointer-events-none select-none">
         <Image
           src="https://res.cloudinary.com/dtvr83fb3/image/upload/v1754970594/Home-1_smcjwp.png"
