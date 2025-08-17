@@ -3,10 +3,10 @@ import CardCustomer from "./CardCustomer";
 
 const Customer = () => {
   return (
-    <section className=" min-h-screen m-4">
+    <section className=" min-h-screen  max-w-7xl mx-auto">
       <div
         id="Header"
-        className="flex gap-4 justify-between items-center text-center "
+        className="flex gap-4 justify-between items-center text-center my-4 "
       >
         <div className="flex flex-2 flex-col gap-4 text-left">
           <h1 className="text-2xl font-bold">What Our Customers Are Saying</h1>
@@ -30,7 +30,15 @@ const Customer = () => {
           <p className="flex-1">Trustpilot</p>
         </div>
       </div>
-      <div id="Cards">
+      <div
+        id="Cards"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      >
+        <CardCustomer />
+        <CardCustomer />
+        <CardCustomer />
+        <CardCustomer />
+        <CardCustomer />
         <CardCustomer />
       </div>
     </section>
