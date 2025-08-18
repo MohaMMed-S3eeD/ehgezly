@@ -1,4 +1,5 @@
 // import Image from "next/image";
+import { CircleUser } from "lucide-react";
 import React from "react";
 
 const CardCustomer = () => {
@@ -7,7 +8,7 @@ const CardCustomer = () => {
       <div className="flex flex-col gap-4">
         <div className="flex w-full justify-between items-center gap-4 ">
           <div className="flex gap-4 items-center">
-            🙂
+            <CircleUser className="w-7 h-7" />
             <h3>John Doe</h3>
           </div>
           <div>
@@ -23,9 +24,9 @@ const CardCustomer = () => {
           </div>
         </div>
         <p>
-          I was struggling to find a reliable and affordable moving
-          company until I found this one. They were professional, efficient, and
-          made the entire process stress-free. I highly recommend them!
+          I was struggling to find a reliable and affordable moving company
+          until I found this one. They were professional, efficient, and made
+          the entire process stress-free. I highly recommend them!
         </p>
       </div>
       <div className="flex  gap-4">

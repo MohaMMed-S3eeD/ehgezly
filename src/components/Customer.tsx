@@ -3,11 +3,8 @@ import CardCustomer from "./CardCustomer";
 
 const Customer = () => {
   return (
-    <section className=" min-h-screen  max-w-7xl mx-auto">
-      <div
-        id="Header"
-        className="flex gap-4 justify-between items-center text-center my-4 "
-      >
+    <section className="flex flex-col gap-4 justify-center  min-h-screen  max-w-7xl mx-auto ">
+      <div className="flex gap-4 justify-between items-center text-center my-4 ">
         <div className="flex flex-2 flex-col gap-4 text-left">
           <h1 className="text-2xl font-bold">What Our Customers Are Saying</h1>
           <p className="text-gray-300 text-sm max-w-md">
