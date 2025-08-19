@@ -13,6 +13,12 @@
 
 **منصة حجز خدمات متكاملة** - احجز خدمتك بسهولة من أي مكان
 
+## ✅ المتطلبات
+
+- Node.js 18.18+ (موصى به: 20 LTS)
+- npm 9+ (أو pnpm/yarn حسب تفضيلك)
+- PostgreSQL 14+
+
 ## ✨ المزايا الرئيسية
 
 🎯 **نظام حجوزات** - PROVIDER ينشئ خدمات ومواعيد، CUSTOMER يحجز  
@@ -48,61 +54,13 @@ npx prisma generate
 npm run dev
 ```
 
-### ⚙️ متغيرات البيئة
-```env
-# قاعدة البيانات
-DATABASE_URL="postgresql://user:pass@localhost:5432/ehgezly"
-DIRECT_URL="postgresql://user:pass@localhost:5432/ehgezly"
+### 🧰 أوامر npm
 
-# NextAuth
-AUTH_SECRET="your-secret-key-here"
-GITHUB_ID="your-github-id"
-GITHUB_SECRET="your-github-secret"
-GOOGLE_ID="your-google-id"
-GOOGLE_SECRET="your-google-secret"
-
-# Cloudinary
-CLOUDINARY_CLOUD_NAME="your-cloud-name"
-CLOUDINARY_API_KEY="your-api-key"
-CLOUDINARY_API_SECRET="your-api-secret"
-```
-
-## 📂 بنية المشروع
-
-```
-src/
-├── app/
-│   ├── (auth)/              # login, register
-│   ├── api/                 # NextAuth, Cloudinary
-│   ├── services/            # عرض الخدمات والحجز
-│   ├── bookings/            # حجوزات العميل
-│   ├── providerDashboard/   # لوحة المزود + إدارة الخدمات
-│   └── profile/             # الملف الشخصي
-├── components/
-│   ├── ui/                  # Button, Input, Dialog...
-│   └── Upload/              # CloudinaryUploader
-├── lib/                     # prisma, cloudinary, utils
-└── auth.ts                  # NextAuth config
-```
-
-## 🗃️ قاعدة البيانات
-
-```bash
-# إدارة البيانات محلياً
-npx prisma studio
-```
-
-**النماذج:**
-- `User` → أدوار: PROVIDER, CUSTOMER 
-- `Service` → خدمات المزودين مع صور
-- `Slot` → المواعيد المتاحة
-- `Booking` → حالات: PENDING, CONFIRMED, CANCELLED
-
-## 🔐 المصادقة
-
-✅ **NextAuth v5** - GitHub, Google, Credentials  
-✅ **حماية المسارات** - Middleware حسب الدور  
-✅ **جلسات JWT** - آمنة وسريعة
+- `npm run dev` → تشغيل بيئة التطوير
+- `npm run build` → توليد Prisma Client ثم بناء Next.js
+- `npm run start` → تشغيل السيرفر للإنتاج بعد البناء
+- `npm run lint` → فحص الشيفرة
+- `postinstall` → `prisma generate` (يعمل تلقائياً بعد التثبيت)
 
 **المسارات:**
 - `/` - الرئيسية
@@ -111,31 +69,10 @@ npx prisma studio
 - `/providerDashboard` - لوحة المزود
 - `/profile` - الملف الشخصي
 
-## ☁️ Cloudinary
 
-```tsx
-<CloudinaryUploader 
-  onUploadComplete={({ url }) => setImage(url)} 
-/>
-```
-
-## 🚀 النشر
-
-**Vercel (موصى به):**
-1. ربط المستودع
-2. إضافة متغيرات البيئة
-3. ربط قاعدة PostgreSQL
-4. Deploy!
-
-## 📚 التوثيق
-
-- [📅 تدفق التواريخ](docs/datetime-flow.md)
-- [📸 رفع الصور](docs/cloudinary-image-upload.md)
-
----
 
 <div align="center">
 
-**🛠️ تم بناؤه بـ Next.js 15 & TypeScript**
+**🛠️ Next.js 15 & TypeScript**
 
 </div>
