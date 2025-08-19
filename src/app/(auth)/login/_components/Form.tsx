@@ -2,11 +2,11 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { LoginSchema } from "@/validation/auth/auth";
 import { toast } from "sonner";
 import { LoginAction } from "../../_actions/auth.action";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const Form = () => {
   const [email, setEmail] = useState("");
@@ -74,43 +74,49 @@ const Form = () => {
     router.refresh();
   };
   return (
-    <div className="max-w-md mx-auto rounded-lg shadow-md w-full border bg-card/60">
-
-      <h1 className="text-2xl font-bold text-center mb-6 text-foreground">
-        Login
-      </h1>
-      <form className="space-y-4">
+    <div className="max-w-md mx-auto w-full rounded-2xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-neutral-900/60 backdrop-blur-md shadow-xl">
+      <div className="p-6 sm:p-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-center mb-2 text-foreground">Login</h1>
+        <p className="text-center text-sm text-muted-foreground mb-6">Welcome back! Please sign in</p>
+        <form className="space-y-4">
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-foreground/80">Email</label>
+            <Input
+              dir="ltr"
+              type="email"
+              placeholder="you@example.com"
+              className="w-full h-11"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="block text-sm font-medium text-foreground/80">Password</label>
+            <Input
+              dir="ltr"
+              type="password"
+              placeholder="••••••••"
+              className="w-full h-11"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <Button
+            type="button"
+            className="w-full h-11 rounded-xl"
+            onClick={() => {
+              handleLogin();
+            }}
+            variant="default"
+          >
+            {isLoading ? "Loading..." : "Login"}
+          </Button>
+        </form>
+        <div className="mt-6 text-center text-sm text-muted-foreground">
+          <span>Don\'t have an account? </span>
+          <Link className="font-medium text-primary hover:underline" href="/register">Create one</Link>
+        </div>
        
-        <Input
-          type="email"
-          placeholder="Email"
-          className="w-full"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="Password"
-          className="w-full"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <Button
-          type="button"
-          className="w-full"
-          onClick={() => {
-            handleLogin();
-          }}
-          variant="default"
-        >
-          {isLoading ? "Loading..." : "Login"}
-        </Button>
-        <Link href="/register">Register</Link>
-      </form>
-      <div className="mt-4 text-center text-sm text-muted-foreground">
-        <p>Provider@gmail.com</p>
-        <p>Customer@gmail.com</p>
       </div>
     </div>
   );

@@ -16,38 +16,40 @@ import { Navigation, Pagination, Autoplay, A11y } from "swiper/modules";
 import gsap from "gsap";
 
 const SwiperComponent = () => {
+  const [isLoading, setIsLoading] = useState(true);
   type ServiceWithRelations = Service & { provider: User; slots: Slot[] };
   const [data, setData] = useState<ServiceWithRelations[]>([]);
   const rootRef = useRef<HTMLDivElement>(null);
-	const [imagesLoaded, setImagesLoaded] = useState(0);
-	const [imagesReady, setImagesReady] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(0);
+  const [imagesReady, setImagesReady] = useState(false);
   useEffect(() => {
     const fetchData = async () => {
       const response = await getServices();
       if (response.success) {
         setData(response.data);
+        setIsLoading(false);
       } else {
         setData([]);
       }
     };
     fetchData();
   }, []);
-	const hasData = data.length > 0;
+  const hasData = data.length > 0;
 
-	// Reset images loading counters when data changes
-	useEffect(() => {
-		if (!hasData) return;
-		setImagesLoaded(0);
-		setImagesReady(false);
-	}, [hasData, data.length]);
+  // Reset images loading counters when data changes
+  useEffect(() => {
+    if (!hasData) return;
+    setImagesLoaded(0);
+    setImagesReady(false);
+  }, [hasData, data.length]);
 
   // Animate cards on mount/data load
-	useEffect(() => {
-		if (!rootRef.current || !hasData || !imagesReady) return;
+  useEffect(() => {
+    if (!rootRef.current || !hasData || !imagesReady) return;
     const ctx = gsap.context(() => {
       const cards = gsap.utils.toArray<HTMLElement>(".service-card");
       if (!cards.length) return;
-			gsap.set(cards, { opacity: 0, y: 24, scale: 0.98 });
+      gsap.set(cards, { opacity: 0, y: 24, scale: 0.98 });
       gsap.to(cards, {
         opacity: 1,
         y: 0,
@@ -58,16 +60,16 @@ const SwiperComponent = () => {
       });
     }, rootRef);
     return () => ctx.revert();
-	}, [hasData, imagesReady]);
+  }, [hasData, imagesReady]);
 
-	// Detect readiness when a threshold of images has loaded
-	useEffect(() => {
-		if (!hasData) return;
-		const targetCount = Math.min(4, data.length);
-		if (imagesLoaded >= targetCount && !imagesReady) {
-			setImagesReady(true);
-		}
-	}, [imagesLoaded, imagesReady, data.length, hasData]);
+  // Detect readiness when a threshold of images has loaded
+  useEffect(() => {
+    if (!hasData) return;
+    const targetCount = Math.min(4, data.length);
+    if (imagesLoaded >= targetCount && !imagesReady) {
+      setImagesReady(true);
+    }
+  }, [imagesLoaded, imagesReady, data.length, hasData]);
 
   const handleSlideChange = () => {
     if (!rootRef.current) return;
@@ -82,12 +84,27 @@ const SwiperComponent = () => {
     );
   };
 
-	// Kick first active slide animation after images are ready
-	useEffect(() => {
-		if (imagesReady) handleSlideChange();
-	}, [imagesReady]);
-  return (
-    <div ref={rootRef} className="min-h-screen w-full flex flex-col items-center justify-center px-4">
+  // Kick first active slide animation after images are ready
+  useEffect(() => {
+    if (imagesReady) handleSlideChange();
+  }, [imagesReady]);
+  return isLoading ? (
+    <div className="h-[50vh] w-full flex flex-col items-center justify-center px-4">
+      <div className="text-center space-y-4">
+        
+        <h2 className="text-xl font-semibold text-foreground">
+          Please login first
+        </h2>
+        <p className="text-sm text-muted-foreground">
+          We are preparing the best services for you
+        </p>
+      </div>
+    </div>
+  ) : (
+    <div
+      ref={rootRef}
+      className="min-h-screen w-full flex flex-col items-center justify-center px-4"
+    >
       <h1 className="text-2xl font-bold text-foreground">
         Discover Most Popular Services
       </h1>
@@ -121,16 +138,16 @@ const SwiperComponent = () => {
                     <span className="absolute top-3 left-3 z-10 rounded-full bg-background/90 backdrop-blur px-3 py-1 text-sm font-semibold text-foreground shadow">
                       {item.price} EGP
                     </span>
-					<Image
+                    <Image
                       src={item.image || ""}
                       alt={item.provider?.name || "service image"}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="object-cover"
-						priority={idx < 4}
-						onLoadingComplete={() => setImagesLoaded((c) => c + 1)}
-						onLoad={() => setImagesLoaded((c) => c + 1)}
-						onError={() => setImagesLoaded((c) => c + 1)}
+                      priority={idx < 4}
+                      onLoadingComplete={() => setImagesLoaded((c) => c + 1)}
+                      onLoad={() => setImagesLoaded((c) => c + 1)}
+                      onError={() => setImagesLoaded((c) => c + 1)}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent group-hover:from-black/70 transition-all duration-300" />
                     <div className="absolute bottom-0 left-0 right-0 z-10 p-4 bg-gradient-to-t from-black/90 via-black/20 to-transparent backdrop-blur-lg">
