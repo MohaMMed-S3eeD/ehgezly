@@ -3,28 +3,28 @@ import CardCustomer from "./CardCustomer";
 
 const Customer = () => {
   return (
-    <section className="flex flex-col gap-4 justify-center  min-h-screen  max-w-7xl mx-auto ">
-      <div className="flex gap-4 justify-between items-center text-center my-4 ">
-        <div className="flex flex-2 flex-col gap-4 text-left">
-          <h1 className="text-2xl font-bold">What Our Customers Are Saying</h1>
+    <section className="flex flex-col gap-4 justify-center min-h-screen max-w-7xl mx-auto px-4">
+      <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center text-left md:text-center my-4">
+        <div className="flex flex-col gap-4 text-left flex-2">
+          <h1 className="text-xl md:text-2xl font-bold">What Our Customers Are Saying</h1>
           <p className="dark:text-gray-300 text-gray-500 text-sm max-w-md">
             Discover why our clients love us! Read real testfnonials from
             satisfied customers who have experienced our top-notch services and
             see how we&apos;ve made their lives easier
           </p>
         </div>
-        <div className="flex flex-1  gap-4">
-          <p className="flex-1">Excellent</p>
-          <p className="flex gap-1 ">
-            <span className="text-white px-1 bg-[#269C54]">★</span>
-            <span className="text-white px-1 bg-[#269C54]">★</span>
-            <span className="text-white px-1 bg-[#269C54]">★</span>
-            <span className="text-white px-1 bg-[#269C54]">★</span>
-            <span className="text-white px-1  bg-gradient-to-r from-[#269C54] from-50% to-gray-500 to-50% ">
+        <div className="flex flex-col md:flex-row flex-1 gap-2 md:gap-4 w-full md:w-auto">
+          <p className="text-sm md:text-base">Excellent</p>
+          <p className="flex gap-1">
+            <span className="text-white px-1 bg-[#269C54] text-sm">★</span>
+            <span className="text-white px-1 bg-[#269C54] text-sm">★</span>
+            <span className="text-white px-1 bg-[#269C54] text-sm">★</span>
+            <span className="text-white px-1 bg-[#269C54] text-sm">★</span>
+            <span className="text-white px-1 bg-gradient-to-r from-[#269C54] from-50% to-gray-500 to-50% text-sm">
               ★
             </span>
           </p>
-          <p className="flex-1">Trustpilot</p>
+          <p className="text-sm md:text-base">Trustpilot</p>
         </div>
       </div>
       <div
