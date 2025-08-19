@@ -76,11 +76,17 @@ const Form = () => {
   return (
     <div className="max-w-md mx-auto w-full rounded-2xl border border-black/10 dark:border-white/10 bg-white/80 dark:bg-neutral-900/60 backdrop-blur-md shadow-xl">
       <div className="p-6 sm:p-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-center mb-2 text-foreground">Login</h1>
-        <p className="text-center text-sm text-muted-foreground mb-6">Welcome back! Please sign in</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-center mb-2 text-foreground">
+          Login
+        </h1>
+        <p className="text-center text-sm text-muted-foreground mb-6">
+          Welcome back! Please sign in
+        </p>
         <form className="space-y-4">
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-foreground/80">Email</label>
+            <label className="block text-sm font-medium text-foreground/80">
+              Email
+            </label>
             <Input
               dir="ltr"
               type="email"
@@ -91,7 +97,9 @@ const Form = () => {
             />
           </div>
           <div className="space-y-2">
-            <label className="block text-sm font-medium text-foreground/80">Password</label>
+            <label className="block text-sm font-medium text-foreground/80">
+              Password
+            </label>
             <Input
               dir="ltr"
               type="password"
@@ -113,10 +121,14 @@ const Form = () => {
           </Button>
         </form>
         <div className="mt-6 text-center text-sm text-muted-foreground">
-          <span>Don\'t have an account? </span>
-          <Link className="font-medium text-primary hover:underline" href="/register">Create one</Link>
+          <span>Don&apos;t have an account? </span>
+          <Link
+            className="font-medium text-primary hover:underline"
+            href="/register"
+          >
+            Create one
+          </Link>
         </div>
-       
       </div>
     </div>
   );
