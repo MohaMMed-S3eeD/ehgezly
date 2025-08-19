@@ -7,24 +7,33 @@ const Footer = () => {
     <div>
       <Box />
       <div>
-        <footer className=" text-white py-12 mt-13">
+        <footer className=" dark:text-white text-black py-12 mt-13">
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {/* Company Info */}
               <div className="col-span-1 md:col-span-2">
                 <h3 className="text-xl font-bold mb-4">Ehgezly</h3>
-                <p className="text-gray-400 mb-4">
+                <p className="dark:text-gray-400 text-gray-500 mb-4">
                   Your trusted platform for connecting with skilled
                   professionals to get any task done.
                 </p>
                 <div className="flex space-x-4">
-                  <Link href="#" className="text-gray-400 hover:text-white">
+                  <Link
+                    href="#"
+                    className="dark:text-gray-400 text-gray-500 hover:text-white"
+                  >
                     Facebook
                   </Link>
-                  <Link href="#" className="text-gray-400 hover:text-white">
+                  <Link
+                    href="#"
+                    className="dark:text-gray-400 text-gray-500 hover:text-white"
+                  >
                     Twitter
                   </Link>
-                  <Link href="#" className="text-gray-400 hover:text-white">
+                  <Link
+                    href="#"
+                    className="dark:text-gray-400 text-gray-500 hover:text-white"
+                  >
                     Instagram
                   </Link>
                 </div>
@@ -35,22 +44,34 @@ const Footer = () => {
                 <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
                 <ul className="space-y-2">
                   <li>
-                    <Link href="#" className="text-gray-400 hover:text-white">
+                    <Link
+                      href="#"
+                      className="dark:text-gray-400 text-gray-500 hover:text-white"
+                    >
                       How it Works
                     </Link>
                   </li>
                   <li>
-                    <Link href="#" className="text-gray-400 hover:text-white">
+                    <Link
+                      href="#"
+                      className="dark:text-gray-400 text-gray-500 hover:text-white"
+                    >
                       Become a Tasker
                     </Link>
                   </li>
                   <li>
-                    <Link href="#" className="text-gray-400 hover:text-white">
+                    <Link
+                      href="#"
+                      className="dark:text-gray-400 text-gray-500 hover:text-white"
+                    >
                       Find Taskers
                     </Link>
                   </li>
                   <li>
-                    <Link href="#" className="text-gray-400 hover:text-white">
+                    <Link
+                      href="#"
+                      className="dark:text-gray-400 text-gray-500 hover:text-white"
+                    >
                       Support
                     </Link>
                   </li>
@@ -60,7 +81,7 @@ const Footer = () => {
               {/* Contact Info */}
               <div>
                 <h4 className="text-lg font-semibold mb-4">Contact</h4>
-                <ul className="space-y-2 text-gray-400">
+                <ul className="space-y-2 dark:text-gray-400 text-gray-500">
                   <li>support@ehgezly.com</li>
                   <li>+1 (555) 123-4567</li>
                   <li>123 Main St, City, State 12345</li>
@@ -70,19 +91,19 @@ const Footer = () => {
 
             {/* Bottom Bar */}
             <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-              <p className="text-gray-400 text-sm">
+              <p className="dark:text-gray-400 text-gray-500 text-sm">
                 © 2024 Ehgezly. All rights reserved.
               </p>
               <div className="flex space-x-6 mt-4 md:mt-0">
                 <Link
                   href="#"
-                  className="text-gray-400 hover:text-white text-sm"
+                  className="dark:text-gray-400 text-gray-500 hover:text-white text-sm"
                 >
                   Privacy Policy
                 </Link>
                 <Link
                   href="#"
-                  className="text-gray-400 hover:text-white text-sm"
+                  className="dark:text-gray-400 text-gray-500 hover:text-white text-sm"
                 >
                   Terms of Service
                 </Link>
@@ -99,7 +120,7 @@ export default Footer;
 
 const Box = () => {
   return (
-    <div className="flex max-w-7xl mx-auto rounded-2xl pt-4 pl-4  h-[40vh] bg-black/50 bg-blur-sm">
+    <div className="flex max-w-7xl mx-auto rounded-2xl pt-4 pl-4  h-[40vh]  bg-gray-100 dark:bg-black/50 bg-blur-sm">
       <div className="flex-1 max-w-1/2 flex flex-col gap-4 justify-center m-10">
         <h1 className="text-4xl font-bold">Ready to Start?</h1>
         <p className="text-xm text-gray-400">

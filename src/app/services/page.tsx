@@ -20,7 +20,7 @@ export default async function Page() {
   const servicesRes = await getServices();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-accent/10">
+    <div className="min-h-screen ">
       <div className="mx-auto max-w-7xl px-4 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent mb-4">
@@ -39,7 +39,7 @@ export default async function Page() {
           )}
         </div>
 
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 ">
           {servicesRes.data?.map((service, index) => {
             const now = new Date();
             const providerName =
@@ -79,7 +79,7 @@ export default async function Page() {
                 )}
 
                 {/* Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-white/95 via-white/30 to-transparent transition-opacity duration-500 dark:from-background/90 dark:via-background/30" />
 
                 {/* Optional accents */}
                 <div className="absolute inset-0 pointer-events-none" />
@@ -94,12 +94,12 @@ export default async function Page() {
 
                 <div className="relative z-10 h-full flex items-end ">
                   <div className="w-full p-4 sm:p-5">
-                    <div className="flex items-center gap-3 mb-2 text-foreground dark:text-white drop-shadow">
-                      <div className="flex size-10 items-center justify-center rounded-full bg-black/40 dark:bg-black/40 text-white text-xs font-bold backdrop-blur">
+                    <div className="flex items-center gap-3 mb-2 text-foreground drop-shadow">
+                      <div className="flex size-10 items-center justify-center rounded-full bg-black/50 text-white text-xs font-bold backdrop-blur dark:bg-black/40">
                         {initials}
                       </div>
                       <div className="min-w-0">
-                        <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-foreground/70 dark:text-white/80 mb-0.5">
+                        <div className="flex items-center gap-1.5 text-[10px] sm:text-xs text-foreground/70 mb-0.5">
                           <User2 className="size-3.5" />
                           <span className="truncate font-medium">
                             {providerName}
@@ -111,16 +111,16 @@ export default async function Page() {
                       </div>
                     </div>
                     {service.description && (
-                      <p className="text-xs sm:text-sm text-foreground/70 dark:text-white/80 line-clamp-2 mb-3 drop-shadow">
+                      <p className="text-xs sm:text-sm text-foreground/70 line-clamp-2 mb-3 drop-shadow">
                         {service.description}
                       </p>
                     )}
                     <div className="flex flex-wrap items-center gap-2 sm:gap-3 ">
-                      <span className="inline-flex items-center gap-1.5 rounded-xl bg-primary/20 dark:bg-white/15 px-2.5 py-1.5 text-xs sm:text-sm font-semibold text-primary dark:text-white backdrop-blur">
+                      <span className="inline-flex items-center gap-1.5 rounded-xl bg-primary/10 px-2.5 py-1.5 text-xs sm:text-sm font-semibold text-primary backdrop-blur">
                         <DollarSign className="size-4" />
                         {formatPriceEGP(Number(service.price))}
                       </span>
-                      <span className="inline-flex items-center gap-1.5 rounded-xl bg-muted/70 dark:bg-white/10 px-2.5 py-1.5 text-xs sm:text-sm font-semibold text-foreground dark:text-white/90 backdrop-blur">
+                      <span className="inline-flex items-center gap-1.5 rounded-xl bg-white/70 px-2.5 py-1.5 text-xs sm:text-sm font-semibold text-foreground backdrop-blur dark:bg-white/10 dark:text-white/90">
                         <Clock className="size-4" />
                         <span>{service.duration} minutes</span>
                       </span>
