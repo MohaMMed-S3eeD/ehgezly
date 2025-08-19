@@ -7,7 +7,7 @@ const Footer = () => {
     <div>
       <Box />
       <div>
-        <footer className=" dark:text-white text-black py-12 mt-13">
+        <footer className=" dark:text-white text-black py-8 md:py-12 mt-13">
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {/* Company Info */}
@@ -120,13 +120,13 @@ export default Footer;
 
 const Box = () => {
   return (
-    <div className="flex max-w-7xl mx-auto rounded-2xl pt-4 pl-4  h-[40vh]  bg-gray-100 dark:bg-black/50 bg-blur-sm">
-      <div className="flex-1 max-w-1/2 flex flex-col gap-4 justify-center m-10">
-        <h1 className="text-4xl font-bold">Ready to Start?</h1>
-        <p className="text-xm text-gray-400">
+    <div className="flex flex-col md:flex-row max-w-7xl mx-auto rounded-2xl pt-6 md:pt-4  md:pl-4 h-auto md:h-[40vh] bg-gray-100 dark:bg-black/50 bg-blur-sm">
+      <div className="flex-1 flex flex-col gap-3 md:gap-4 justify-center items-center md:items-start text-center md:text-left m-4 md:m-10">
+        <h1 className="text-2xl md:text-4xl font-bold">Ready to Start?</h1>
+        <p className="text-sm md:text-base text-gray-400">
           Sign up today and connect with top taskers to get your job done.
         </p>
-        <div className="flex gap-4">
+        <div className="flex gap-3 md:gap-4 justify-center md:justify-start flex-wrap">
           <Link
             href="#"
             className="text-sm bg-[#8EEA80] text-black px-4 py-2 rounded-2xl"
@@ -138,13 +138,13 @@ const Box = () => {
           </Link>
         </div>
       </div>
-      <div className="flex-1 w-full h-full  flex justify-end items-center">
+      <div className="flex-1 w-full h-48 md:h-full flex justify-center md:justify-end items-center mt-6 md:mt-0">
         <Image
           src="https://res.cloudinary.com/dtvr83fb3/image/upload/v1755492803/Screenshot_2025-08-18_074907-removebg-preview_upscayl_4x_upscayl-standard-4x_avcukq.png"
           alt="img"
           width={200}
           height={200}
-          className="w-full h-full object-right object-contain rounded-2xl"
+          className="w-full h-full  object-right object-contain rounded-2xl"
         />
       </div>
     </div>
